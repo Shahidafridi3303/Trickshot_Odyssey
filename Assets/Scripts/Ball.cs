@@ -28,5 +28,9 @@ public class Ball : MonoBehaviour
         rb.velocity = Vector2.zero;
         rb.angularVelocity = 0f;
         rb.isKinematic = true;
+
+        // Reset rotation so it does not carry over from previous launch
+        transform.rotation = Quaternion.identity;
     }
+
 }

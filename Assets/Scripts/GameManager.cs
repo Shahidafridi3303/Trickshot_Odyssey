@@ -53,14 +53,35 @@ public class GameManager : MonoBehaviour
 
     void OnDragStart()
     {
+        // Check if ball reference is lost
+        if (ball == null)
+        {
+            ball = FindObjectOfType<Ball>();  // Find the ball again
+        }
+
+        if (ball == null)
+        {
+            Debug.LogError("Ball reference is still null!");
+            return;
+        }
+
+        // Reset ball position and rotation
         ball.DeactivateRb();
+        ball.transform.position = Slingshot.Instance.idlePosition.position;
+        ball.transform.rotation = Quaternion.identity;
+
+        // Reassign Slingshot.Instance.ball since it was null after release
+        Slingshot.Instance.ball = ball.GetComponent<Rigidbody2D>();
+        Slingshot.Instance.ballCollider = ball.GetComponent<Collider2D>();
+
         startPoint = cam.ScreenToWorldPoint(Input.mousePosition);
 
         trajectory.Show();
-
         Slingshot.Instance.OnMouseDownEvent();
-
     }
+
+
+
 
     void OnDrag()
     {
@@ -69,11 +90,8 @@ public class GameManager : MonoBehaviour
         direction = (startPoint - endPoint).normalized;
         force = direction * distance * pushForce;
 
-        //just for debug
-        Debug.DrawLine(startPoint, endPoint);
-
-        trajectory.UpdateDots(ball.pos, force);
-
+        // Update trajectory dots based on adjusted ball position
+        trajectory.UpdateDots(Slingshot.Instance.ball.transform.position, force);
     }
 
     void OnDragEnd()

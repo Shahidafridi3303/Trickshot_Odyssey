@@ -21,8 +21,8 @@ public class Slingshot : MonoBehaviour
 
     public float ballPositionOffset;
 
-    Rigidbody2D ball;
-    Collider2D ballCollider;
+    [HideInInspector] public Rigidbody2D ball;
+    [HideInInspector] public Collider2D ballCollider;
 
     public float force;
 
@@ -111,10 +111,16 @@ public class Slingshot : MonoBehaviour
         if (ball)
         {
             Vector3 dir = position - center.position;
-            ball.transform.position = position + dir.normalized * ballPositionOffset;
+            Vector3 adjustedPosition = position + dir.normalized * ballPositionOffset;
+
+            ball.transform.position = adjustedPosition;
             ball.transform.right = -dir.normalized;
+
+            // Ensure trajectory updates from this final adjusted position
+            GameManager.Instance.trajectory.UpdateDots(adjustedPosition, (center.position - adjustedPosition) * force);
         }
     }
+
 
     Vector3 ClampBoundary(Vector3 vector)
     {

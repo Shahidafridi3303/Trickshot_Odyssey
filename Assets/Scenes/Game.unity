@@ -580,7 +580,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ball: {fileID: 503467964}
   trajectory: {fileID: 1965758486}
-  pushForce: 4
+  pushForce: 8
 --- !u!4 &985157076
 Transform:
   m_ObjectHideFlags: 0
@@ -1287,11 +1287,13 @@ MonoBehaviour:
   center: {fileID: 1430939587585409528}
   idlePosition: {fileID: 1430939587952274747}
   currentPosition: {x: 0, y: 0, z: 0}
-  maxLength: 3
+  maxLength: 2
   bottomBoundary: -3.5
   isMouseDown: 0
   ballPrefab: {fileID: 503467963}
   ballPositionOffset: -0.17
+  ball: {fileID: 0}
+  ballCollider: {fileID: 0}
   force: 5
 --- !u!1 &1430939587059862461
 GameObject:
@@ -1318,7 +1320,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1430939587059862461}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -1541,7 +1543,7 @@ LineRenderer:
   - {x: 0, y: 0, z: 1}
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 0.1
+    widthMultiplier: 0.05
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -1709,7 +1711,7 @@ LineRenderer:
   - {x: 0, y: 0, z: 1}
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 0.1
+    widthMultiplier: 0.05
     widthCurve:
       serializedVersion: 2
       m_Curve:
