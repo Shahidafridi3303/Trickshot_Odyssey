@@ -5,7 +5,7 @@ public class Ball : MonoBehaviour
     private Rigidbody2D rb;
     private CircleCollider2D col;
 
-    private Vector3 pos { get { return transform.position; } }
+    [HideInInspector] public Vector3 pos { get { return transform.position; } }
 
     void Awake()
     {
