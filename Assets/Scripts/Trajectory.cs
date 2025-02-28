@@ -12,11 +12,15 @@ public class Trajectory : MonoBehaviour
     Transform[] dotsList;
 
     Vector2 pos;
+    //dot pos
     float timeStamp;
 
+    //--------------------------------
     void Start()
     {
+        //hide trajectory in the start
         Hide();
+        //prepare dots
         PrepareDots();
     }
 
@@ -32,19 +36,22 @@ public class Trajectory : MonoBehaviour
         {
             dotsList[i] = Instantiate(dotPrefab, null).transform;
             dotsList[i].parent = dotsParent.transform;
+
             dotsList[i].localScale = Vector3.one * scale;
             if (scale > dotMinScale)
                 scale -= scaleFactor;
         }
     }
 
-    public void UpdateDots(Vector2 ballPos, Vector2 forceApplied)
+    public void UpdateDots(Vector3 ballPos, Vector2 forceApplied)
     {
         timeStamp = dotSpacing;
         for (int i = 0; i < dotsNumber; i++)
         {
+            // OR pos = (ballPos+force*time)-((-Physics2D.gravity*time*time)/2f);
             pos.x = (ballPos.x + forceApplied.x * timeStamp);
             pos.y = (ballPos.y + forceApplied.y * timeStamp) - (Physics2D.gravity.magnitude * timeStamp * timeStamp) / 2f;
+
             dotsList[i].position = pos;
             timeStamp += dotSpacing;
         }
