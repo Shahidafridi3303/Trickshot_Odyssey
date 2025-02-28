@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Bird : MonoBehaviour
@@ -8,15 +7,13 @@ public class Bird : MonoBehaviour
 
     public void Release()
     {
-        PathPoints.instance.Clear();
         StartCoroutine(CreatePathPoints());
     }
 
     IEnumerator CreatePathPoints()
     {
-        while (true)
+        while (!collided)
         {
-            if (collided) break;
             PathPoints.instance.CreateCurrentPathPoint(transform.position);
             yield return new WaitForSeconds(PathPoints.instance.timeInterval);
         }
@@ -25,5 +22,6 @@ public class Bird : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         collided = true;
+        Destroy(gameObject, 2f);
     }
 }

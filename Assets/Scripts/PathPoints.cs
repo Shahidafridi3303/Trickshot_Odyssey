@@ -4,11 +4,8 @@ using UnityEngine;
 public class PathPoints : MonoBehaviour
 {
     public GameObject[] pathTemplates;
-
     public static PathPoints instance;
-
     public List<GameObject> lastPoints;
-
     public float timeInterval;
 
     int lastIndex = 0;
@@ -26,8 +23,7 @@ public class PathPoints : MonoBehaviour
         lastPoints.Add(point);
 
         lastIndex++;
-
-        if (lastIndex == pathTemplates.Length) 
+        if (lastIndex == pathTemplates.Length)
             lastIndex = 0;
     }
 

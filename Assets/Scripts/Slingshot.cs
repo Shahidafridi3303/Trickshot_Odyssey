@@ -1,101 +1,79 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Slingshot : MonoBehaviour
 {
     public LineRenderer[] lineRenderers;
     public Transform[] stripPositions;
-    public Transform center;
-    public Transform idlePosition;
-
-    public Vector3 currentPosition;
-
-    public float maxLength;
-
-    public float bottomBoundary;
-
-    bool isMouseDown;
-
+    public Transform center, idlePosition;
     public GameObject birdPrefab;
+    public float maxLength, bottomBoundary, force, respawnDelay;
 
-    public float birdPositionOffset;
-
-    Rigidbody2D bird;
-    Collider2D birdCollider;
-
-    public float force;
+    private Rigidbody2D birdRb;
+    private Collider2D birdCollider;
+    private Vector3 currentPosition;
+    private bool isDragging;
 
     void Start()
+    {
+        SetupSlingshot();
+        CreateBird();
+    }
+
+    void SetupSlingshot()
     {
         lineRenderers[0].positionCount = 2;
         lineRenderers[1].positionCount = 2;
         lineRenderers[0].SetPosition(0, stripPositions[0].position);
         lineRenderers[1].SetPosition(0, stripPositions[1].position);
-
-        CreateBird();
     }
 
-    void CreateBird()
+    public void CreateBird()
     {
-        bird = Instantiate(birdPrefab).GetComponent<Rigidbody2D>();
-        birdCollider = bird.GetComponent<Collider2D>();
+        GameObject newBird = Instantiate(birdPrefab, idlePosition.position, Quaternion.identity);
+        birdRb = newBird.GetComponent<Rigidbody2D>();
+        birdCollider = newBird.GetComponent<Collider2D>();
+        birdRb.isKinematic = true;
         birdCollider.enabled = false;
-
-        bird.isKinematic = true;
-
         ResetStrips();
     }
 
     void Update()
     {
-        if (isMouseDown)
+        if (isDragging)
         {
-            Vector3 mousePosition = Input.mousePosition;
+            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             mousePosition.z = 10;
-
-            currentPosition = Camera.main.ScreenToWorldPoint(mousePosition);
-            currentPosition = center.position + Vector3.ClampMagnitude(currentPosition
-                - center.position, maxLength);
-
+            currentPosition = center.position + Vector3.ClampMagnitude(mousePosition - center.position, maxLength);
             currentPosition = ClampBoundary(currentPosition);
-
             SetStrips(currentPosition);
-
-            if (birdCollider)
-            {
-                birdCollider.enabled = true;
-            }
-        }
-        else
-        {
-            ResetStrips();
+            GameManager.Instance.trajectory.UpdateDots(birdRb.position, (center.position - currentPosition) * force);
         }
     }
 
     private void OnMouseDown()
     {
-        isMouseDown = true;
+        isDragging = true;
+        GameManager.Instance.trajectory.Show();
     }
 
     private void OnMouseUp()
     {
-        isMouseDown = false;
+        isDragging = false;
         Shoot();
-        currentPosition = idlePosition.position;
+        GameManager.Instance.trajectory.Hide();
     }
 
     void Shoot()
     {
-        bird.isKinematic = false;
-        Vector3 birdForce = (currentPosition - center.position) * force * -1;
-        bird.velocity = birdForce;
+        birdRb.isKinematic = false;
+        birdRb.velocity = (center.position - currentPosition) * force;
+        birdRb.GetComponent<Bird>().Release();
+        Invoke("Respawn", respawnDelay);
+    }
 
-        bird.GetComponent<Bird>().Release();
-
-        bird = null;
-        birdCollider = null;
-        Invoke("CreateBird", 2);
+    void Respawn()
+    {
+        GameManager.Instance.SpawnBird();
     }
 
     void ResetStrips()
@@ -108,13 +86,6 @@ public class Slingshot : MonoBehaviour
     {
         lineRenderers[0].SetPosition(1, position);
         lineRenderers[1].SetPosition(1, position);
-
-        if (bird)
-        {
-            Vector3 dir = position - center.position;
-            bird.transform.position = position + dir.normalized * birdPositionOffset;
-            bird.transform.right = -dir.normalized;
-        }
     }
 
     Vector3 ClampBoundary(Vector3 vector)

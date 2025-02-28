@@ -1,86 +1,32 @@
+using System.Collections;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    Camera cam;
-
-    public Ball ball;
-    public Trajectory trajectory;
-    [SerializeField] float pushForce = 4f;
-
-    bool isDragging = false;
-
-    Vector2 startPoint;
-    Vector2 endPoint;
-    Vector2 direction;
-    Vector2 force;
-    float distance;
-
     public static GameManager Instance;
+    public Trajectory trajectory;
+    public Slingshot slingshot;
+    public GameObject birdPrefab;
+    public float respawnDelay = 2f;
 
-    void Awake()
+    private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
+        if (Instance == null) Instance = this;
     }
 
-    void Start()
+    private void Start()
     {
-        cam = Camera.main;
-        ball.DeactivateRb();
+        SpawnBird();
     }
 
-    void Update()
+    public void SpawnBird()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            isDragging = true;
-            OnDragStart();
-        }
-        if (Input.GetMouseButtonUp(0))
-        {
-            isDragging = false;
-            OnDragEnd();
-        }
-
-        if (isDragging)
-        {
-            OnDrag();
-        }
+        StartCoroutine(RespawnBird());
     }
 
-    void OnDragStart()
+    IEnumerator RespawnBird()
     {
-        ball.DeactivateRb();
-        startPoint = cam.ScreenToWorldPoint(Input.mousePosition);
-
-        trajectory.Show();
+        yield return new WaitForSeconds(respawnDelay);
+        slingshot.CreateBird();
     }
-
-    void OnDrag()
-    {
-        endPoint = cam.ScreenToWorldPoint(Input.mousePosition);
-        distance = Vector2.Distance(startPoint, endPoint);
-        direction = (startPoint - endPoint).normalized;
-        force = direction * distance * pushForce;
-
-        //just for debug
-        Debug.DrawLine(startPoint, endPoint);
-
-
-        trajectory.UpdateDots(ball.pos, force);
-    }
-
-    void OnDragEnd()
-    {
-        //push the ball
-        ball.ActivateRb();
-
-        ball.Push(force);
-
-        trajectory.Hide();
-    }
-
 }
