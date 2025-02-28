@@ -80,9 +80,6 @@ public class GameManager : MonoBehaviour
         Slingshot.Instance.OnMouseDownEvent();
     }
 
-
-
-
     void OnDrag()
     {
         endPoint = cam.ScreenToWorldPoint(Input.mousePosition);
@@ -105,6 +102,7 @@ public class GameManager : MonoBehaviour
 
         Slingshot.Instance.OnMouseUpEvent();
 
+        ball.GetComponent<Ball>().Release();
     }
 
 }

@@ -64,6 +64,6 @@ public class Trajectory : MonoBehaviour
 
     public void Hide()
     {
-        dotsParent.SetActive(false);
+        //dotsParent.SetActive(false);
     }
 }

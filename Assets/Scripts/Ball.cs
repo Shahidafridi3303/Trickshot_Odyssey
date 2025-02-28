@@ -1,9 +1,13 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
     private Rigidbody2D rb;
     private CircleCollider2D col;
+
+    public bool collided;
 
     [HideInInspector] public Vector3 pos { get { return transform.position; } }
 
@@ -33,4 +37,25 @@ public class Ball : MonoBehaviour
         transform.rotation = Quaternion.identity;
     }
 
+    public void Release()
+    {
+        PostTrajectory.instance.Clear();
+        collided = false;
+        StartCoroutine(CreatePathPoints());
+    }
+
+    IEnumerator CreatePathPoints()
+    {
+        while (true)
+        {
+            if (collided) break;
+            PostTrajectory.instance.CreateCurrentPathPoint(transform.position);
+            yield return new WaitForSeconds(PostTrajectory.instance.timeInterval);
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        collided = true;
+    }
 }
