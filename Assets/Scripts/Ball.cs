@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
-    public Rigidbody2D rb;
-    public CircleCollider2D col;
+    private Rigidbody2D rb;
+    private CircleCollider2D col;
 
-    [HideInInspector] public Vector3 pos { get { return transform.position; } }
+    private Vector3 pos { get { return transform.position; } }
 
     void Awake()
     {
