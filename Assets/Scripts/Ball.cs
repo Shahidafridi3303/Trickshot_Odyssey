@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BallController : MonoBehaviour
+public class Ball : MonoBehaviour
 {
     public Rigidbody2D rb;
     public CircleCollider2D col;
