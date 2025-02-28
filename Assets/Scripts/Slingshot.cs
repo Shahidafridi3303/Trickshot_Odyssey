@@ -66,10 +66,18 @@ public class Slingshot : MonoBehaviour
     void Shoot()
     {
         birdRb.isKinematic = false;
-        birdRb.velocity = (center.position - currentPosition) * force;
+        birdCollider.enabled = true; // Ensure collision works
+        Vector3 birdForce = (currentPosition - center.position) * force * -1;
+        birdRb.velocity = birdForce;
+
         birdRb.GetComponent<Bird>().Release();
-        Invoke("Respawn", respawnDelay);
+
+        birdRb = null;
+        birdCollider = null;
+
+        Invoke("CreateBird", 2f); // Ensure a new bird spawns after 2 seconds
     }
+
 
     void Respawn()
     {
