@@ -57,6 +57,9 @@ public class GameManager : MonoBehaviour
         startPoint = cam.ScreenToWorldPoint(Input.mousePosition);
 
         trajectory.Show();
+
+        Slingshot.Instance.OnMouseDownEvent();
+
     }
 
     void OnDrag()
@@ -69,8 +72,8 @@ public class GameManager : MonoBehaviour
         //just for debug
         Debug.DrawLine(startPoint, endPoint);
 
-
         trajectory.UpdateDots(ball.pos, force);
+
     }
 
     void OnDragEnd()
@@ -81,6 +84,9 @@ public class GameManager : MonoBehaviour
         ball.Push(force);
 
         trajectory.Hide();
+
+        Slingshot.Instance.OnMouseUpEvent();
+
     }
 
 }

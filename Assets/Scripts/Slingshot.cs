@@ -15,16 +15,29 @@ public class Slingshot : MonoBehaviour
 
     public float bottomBoundary;
 
-    bool isMouseDown;
+    [HideInInspector] public bool isMouseDown;
 
-    public GameObject birdPrefab;
+    public GameObject ballPrefab;
 
-    public float birdPositionOffset;
+    public float ballPositionOffset;
 
-    Rigidbody2D bird;
-    Collider2D birdCollider;
+    Rigidbody2D ball;
+    Collider2D ballCollider;
 
     public float force;
+
+    public static Slingshot Instance;
+
+    void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+
+        ball = ballPrefab.GetComponent<Rigidbody2D>();
+        ballCollider = ball.GetComponent<Collider2D>();
+    }
 
     void Start()
     {
@@ -32,17 +45,6 @@ public class Slingshot : MonoBehaviour
         lineRenderers[1].positionCount = 2;
         lineRenderers[0].SetPosition(0, stripPositions[0].position);
         lineRenderers[1].SetPosition(0, stripPositions[1].position);
-
-        CreateBird();
-    }
-
-    void CreateBird()
-    {
-        bird = Instantiate(birdPrefab).GetComponent<Rigidbody2D>();
-        birdCollider = bird.GetComponent<Collider2D>();
-        birdCollider.enabled = false;
-
-        bird.isKinematic = true;
 
         ResetStrips();
     }
@@ -62,9 +64,9 @@ public class Slingshot : MonoBehaviour
 
             SetStrips(currentPosition);
 
-            if (birdCollider)
+            if (ballCollider)
             {
-                birdCollider.enabled = true;
+                ballCollider.enabled = true;
             }
         }
         else
@@ -73,29 +75,26 @@ public class Slingshot : MonoBehaviour
         }
     }
 
-    private void OnMouseDown()
+    public void OnMouseDownEvent()
     {
         isMouseDown = true;
     }
 
-    private void OnMouseUp()
+    public void OnMouseUpEvent()
     {
         isMouseDown = false;
-        Shoot();
+        OnRelease();
         currentPosition = idlePosition.position;
     }
 
-    void Shoot()
+    void OnRelease()
     {
-        bird.isKinematic = false;
+        ball.isKinematic = false;
         Vector3 birdForce = (currentPosition - center.position) * force * -1;
-        bird.velocity = birdForce;
+        ball.velocity = birdForce;
 
-        bird.GetComponent<Bird>().Release();
-
-        bird = null;
-        birdCollider = null;
-        Invoke("CreateBird", 2);
+        ball = null;
+        ballCollider = null;
     }
 
     void ResetStrips()
@@ -109,11 +108,11 @@ public class Slingshot : MonoBehaviour
         lineRenderers[0].SetPosition(1, position);
         lineRenderers[1].SetPosition(1, position);
 
-        if (bird)
+        if (ball)
         {
             Vector3 dir = position - center.position;
-            bird.transform.position = position + dir.normalized * birdPositionOffset;
-            bird.transform.right = -dir.normalized;
+            ball.transform.position = position + dir.normalized * ballPositionOffset;
+            ball.transform.right = -dir.normalized;
         }
     }
 
