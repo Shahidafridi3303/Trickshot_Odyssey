@@ -438,7 +438,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
+  m_EdgeRadius: 0.05
 --- !u!212 &974582883
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -536,6 +536,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ball: {fileID: 1989607887}
+  trajectory: {fileID: 1965758486}
+  pushForce: 4
 --- !u!4 &985157076
 Transform:
   m_ObjectHideFlags: 0
@@ -613,7 +615,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
+  m_EdgeRadius: 0.05
 --- !u!212 &1019898323
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -779,7 +781,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
+  m_EdgeRadius: 0.05
 --- !u!212 &1563210894
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -909,7 +911,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
+  m_EdgeRadius: 0.05
 --- !u!212 &1950432186
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1010,8 +1012,8 @@ MonoBehaviour:
   dotsParent: {fileID: 625029053}
   dotPrefab: {fileID: 6187592833282570841, guid: de1c68fb58dbe954aa397f2e2e19a7f5, type: 3}
   dotSpacing: 0.03
-  dotMinScale: 0.01
-  dotMaxScale: 0.3
+  dotMinScale: 0.178
+  dotMaxScale: 0.383
 --- !u!4 &1965758487
 Transform:
   m_ObjectHideFlags: 0
@@ -1151,7 +1153,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0fd81a7155b29424fb7f512e8c6499de, type: 3}
   m_Color: {r: 0.43117017, g: 1, b: 0.07075471, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1172,8 +1174,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.11288731, y: 1.87, z: 0}
-  m_LocalScale: {x: 0.6, y: 0.6, z: 0}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.5358038, y: 0.5358038, z: 0}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
