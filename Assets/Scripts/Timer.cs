@@ -8,6 +8,7 @@ public class Timer : MonoBehaviour
     [SerializeField] private float startTime = 90f; // in seconds (1:30)
     private float currentTime;
     private bool isRunning = true;
+    private Coroutine countdownCoroutine;
 
     public static Timer Instance;
 
@@ -22,7 +23,7 @@ public class Timer : MonoBehaviour
     private void Start()
     {
         currentTime = startTime;
-        StartCoroutine(Countdown());
+        countdownCoroutine = StartCoroutine(Countdown());
     }
 
     private IEnumerator Countdown()
@@ -47,5 +48,15 @@ public class Timer : MonoBehaviour
     public void StopTimer()
     {
         isRunning = false;
+        if (countdownCoroutine != null)
+        {
+            StopCoroutine(countdownCoroutine);
+        }
+    }
+
+    public void ResumeTimer()
+    {
+        isRunning = true;
+        countdownCoroutine = StartCoroutine(Countdown());
     }
 }
