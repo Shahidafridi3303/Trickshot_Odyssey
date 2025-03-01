@@ -7,7 +7,7 @@ public class Ball : MonoBehaviour
     private Rigidbody2D rb;
     private CircleCollider2D col;
 
-    public bool collided;
+    [HideInInspector] public bool collided;
 
     [HideInInspector] public Vector3 pos { get { return transform.position; } }
 
@@ -19,7 +19,7 @@ public class Ball : MonoBehaviour
 
     public void Push(Vector2 force)
     {
-        rb.AddForce(force, ForceMode2D.Impulse);
+        rb.velocity = force; // Instant velocity change for accuracy
     }
 
     public void ActivateRb()
@@ -32,9 +32,7 @@ public class Ball : MonoBehaviour
         rb.velocity = Vector2.zero;
         rb.angularVelocity = 0f;
         rb.isKinematic = true;
-
-        // Reset rotation so it does not carry over from previous launch
-        transform.rotation = Quaternion.identity;
+        transform.rotation = Quaternion.identity; // Reset rotation to avoid carryover
     }
 
     public void Release()

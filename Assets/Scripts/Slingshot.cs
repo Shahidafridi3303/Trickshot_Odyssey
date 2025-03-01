@@ -10,19 +10,16 @@ public class Slingshot : MonoBehaviour
     public Transform idlePosition;
 
     public Vector3 currentPosition;
-
     public float maxLength;
-
     public float bottomBoundary;
 
     [HideInInspector] public bool isMouseDown;
 
-    public GameObject ballPrefab;
-
+    //public GameObject ballPrefab;
     public float ballPositionOffset;
 
-    [HideInInspector] public Rigidbody2D ball;
-    [HideInInspector] public Collider2D ballCollider;
+    //[HideInInspector] public Rigidbody2D ball;
+    //[HideInInspector] public Collider2D ballCollider;
 
     public float force;
 
@@ -35,8 +32,8 @@ public class Slingshot : MonoBehaviour
             Instance = this;
         }
 
-        ball = ballPrefab.GetComponent<Rigidbody2D>();
-        ballCollider = ball.GetComponent<Collider2D>();
+        //ball = ballPrefab.GetComponent<Rigidbody2D>();
+        //ballCollider = ball.GetComponent<Collider2D>();
     }
 
     void Start()
@@ -64,10 +61,10 @@ public class Slingshot : MonoBehaviour
 
             SetStrips(currentPosition);
 
-            if (ballCollider)
-            {
-                ballCollider.enabled = true;
-            }
+            //if (ballCollider)
+            //{
+            //    ballCollider.enabled = true;
+            //}
         }
         else
         {
@@ -83,19 +80,19 @@ public class Slingshot : MonoBehaviour
     public void OnMouseUpEvent()
     {
         isMouseDown = false;
-        OnRelease();
+        //OnRelease();
         currentPosition = idlePosition.position;
     }
 
-    void OnRelease()
-    {
-        ball.isKinematic = false;
-        Vector3 birdForce = (currentPosition - center.position) * force * -1;
-        ball.velocity = birdForce;
+    //void OnRelease()
+    //{
+    //    ball.isKinematic = false;
+    //    Vector3 birdForce = (center.position - currentPosition) * force;
 
-        ball = null;
-        ballCollider = null;
-    }
+    //    ball.velocity = birdForce; // Instant velocity for accurate release
+    //    ball = null;
+    //    ballCollider = null;
+    //}
 
     void ResetStrips()
     {
@@ -108,19 +105,15 @@ public class Slingshot : MonoBehaviour
         lineRenderers[0].SetPosition(1, position);
         lineRenderers[1].SetPosition(1, position);
 
-        if (ball)
-        {
-            Vector3 dir = position - center.position;
-            Vector3 adjustedPosition = position + dir.normalized * ballPositionOffset;
+        //Vector3 dir = position - center.position;
+        //Vector3 adjustedPosition = position + dir.normalized * ballPositionOffset;
 
-            ball.transform.position = adjustedPosition;
-            ball.transform.right = -dir.normalized;
+        //ball.transform.position = adjustedPosition;
+        //ball.transform.right = -dir.normalized;
 
-            // Ensure trajectory updates from this final adjusted position
-            GameManager.Instance.trajectory.UpdateDots(adjustedPosition, (center.position - adjustedPosition) * force);
-        }
+        //GameManager.Instance.trajectory.UpdateDots(adjustedPosition, (center.position - adjustedPosition) * force);
+        
     }
-
 
     Vector3 ClampBoundary(Vector3 vector)
     {
