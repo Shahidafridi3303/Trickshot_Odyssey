@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     public Ball ball;
     public Trajectory trajectory;
     [SerializeField] float pushForce = 4f;
+    [SerializeField] float maxDragDistance = 2.5f; // Set your preferred limit
 
     bool isDragging = false;
 
@@ -35,17 +36,6 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        //if (Input.GetMouseButtonDown(0))
-        //{
-        //    isDragging = true;
-        //    OnDragStart();
-        //}
-        //if (Input.GetMouseButtonUp(0))
-        //{
-        //    isDragging = false;
-        //    OnDragEnd();
-        //}
-
         if (isDragging)
         {
             OnDrag();
@@ -80,6 +70,10 @@ public class GameManager : MonoBehaviour
     {
         endPoint = cam.ScreenToWorldPoint(Input.mousePosition);
         distance = Vector2.Distance(startPoint, endPoint);
+
+        // Limit the drag distance
+        distance = Mathf.Min(distance, maxDragDistance);
+
         direction = (startPoint - endPoint).normalized;
         force = direction * distance * pushForce;
 
@@ -89,9 +83,7 @@ public class GameManager : MonoBehaviour
     void OnDragEnd()
     {
         ball.ActivateRb();
-
         ball.Push(force);
-
         Slingshot.Instance.OnMouseUpEvent();
         ball.GetComponent<Ball>().Release();
     }

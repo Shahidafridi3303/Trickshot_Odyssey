@@ -15,10 +15,6 @@ public class Slingshot : MonoBehaviour
 
     [HideInInspector] public bool isMouseDown;
 
-    public float ballPositionOffset;
-
-    public float force;
-
     public static Slingshot Instance;
 
     void Awake()
