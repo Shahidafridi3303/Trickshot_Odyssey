@@ -98,7 +98,7 @@ public class GameManager : MonoBehaviour
 
         ball.Push(force);
 
-        trajectory.Hide();
+        //trajectory.Hide();
 
         Slingshot.Instance.OnMouseUpEvent();
 
