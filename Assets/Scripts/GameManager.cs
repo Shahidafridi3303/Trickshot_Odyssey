@@ -28,6 +28,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI fallenBoxesText;
     private HashSet<GameObject> countedBoxes = new HashSet<GameObject>();
 
+    public GameObject resultPanel;
+
     public static GameManager Instance;
 
     void Awake()
@@ -125,6 +127,12 @@ public class GameManager : MonoBehaviour
 
     public void DisplayResult()
     {
-        Debug.Log("Result: All boxes have fallen!");
+        OpenResultPanel();
+    }
+
+    public void OpenResultPanel()
+    {
+        Timer.Instance.StopTimer();
+        resultPanel.SetActive(true);
     }
 }
