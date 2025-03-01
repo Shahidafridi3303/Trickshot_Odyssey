@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -34,21 +35,33 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            isDragging = true;
-            OnDragStart();
-        }
-        if (Input.GetMouseButtonUp(0))
-        {
-            isDragging = false;
-            OnDragEnd();
-        }
+        //if (Input.GetMouseButtonDown(0))
+        //{
+        //    isDragging = true;
+        //    OnDragStart();
+        //}
+        //if (Input.GetMouseButtonUp(0))
+        //{
+        //    isDragging = false;
+        //    OnDragEnd();
+        //}
 
         if (isDragging)
         {
             OnDrag();
         }
+    }
+
+    private void OnMouseDown()
+    {
+        isDragging = true;
+        OnDragStart();
+    }
+
+    private void OnMouseUp()
+    {
+        isDragging = false;
+        OnDragEnd();
     }
 
     void OnDragStart()
@@ -76,9 +89,6 @@ public class GameManager : MonoBehaviour
     void OnDragEnd()
     {
         ball.ActivateRb();
-
-        // Use the force calculation consistent with the slingshot release logic
-        //Vector3 finalForce = (Slingshot.Instance.center.position - Slingshot.Instance.currentPosition) * Slingshot.Instance.force;
 
         ball.Push(force);
 
