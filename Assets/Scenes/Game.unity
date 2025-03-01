@@ -236,7 +236,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 552990144328371565, guid: 0fcb7f633e3bc9d428e11104884676e4, type: 3}
       propertyPath: m_Name
-      value: Bird
+      value: Ball
       objectReference: {fileID: 0}
     - target: {fileID: 2817669535233456472, guid: 0fcb7f633e3bc9d428e11104884676e4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -715,7 +715,7 @@ Transform:
   m_GameObject: {fileID: 1019898321}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -9.545, y: 0.412, z: -0.27113214}
+  m_LocalPosition: {x: -9.129, y: 0.412, z: -0.27113214}
   m_LocalScale: {x: 0.43247765, y: 10.726308, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1043,7 +1043,7 @@ Transform:
   m_GameObject: {fileID: 1563210892}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 9.5509, y: 0.3856804, z: -0.27113214}
+  m_LocalPosition: {x: 9.231, y: 0.3856804, z: -0.27113214}
   m_LocalScale: {x: 0.50914925, y: 10.040297, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1350,6 +1350,7 @@ GameObject:
   - component: {fileID: 1430939587059862463}
   - component: {fileID: 1430939587059862460}
   - component: {fileID: 1430939587059862462}
+  - component: {fileID: 1430939587059862464}
   m_Layer: 0
   m_Name: Slingshot
   m_TagString: Untagged
@@ -1389,7 +1390,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.3005569, y: -0.4350176}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -1400,7 +1401,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 2.7}
+  m_Size: {x: 2.961534, y: 3.570035}
   m_EdgeRadius: 0
 --- !u!4 &1430939587059862463
 Transform:
@@ -1425,6 +1426,21 @@ Transform:
   - {fileID: 1430939586816105691}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1430939587059862464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1430939587059862461}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57144e0138dd47248bce87bd1679b53f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ball: {fileID: 503467964}
+  trajectory: {fileID: 1965758486}
+  pushForce: 10
 --- !u!212 &1430939587226294317
 SpriteRenderer:
   m_ObjectHideFlags: 0
