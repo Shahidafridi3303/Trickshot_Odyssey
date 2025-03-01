@@ -1,5 +1,8 @@
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
@@ -18,6 +21,13 @@ public class GameManager : MonoBehaviour
     Vector2 force;
     float distance;
 
+    // For tracking FallenBoxes UI
+    [SerializeField] private int targetBoxes = 5;
+    [SerializeField] private float updateDelay = 2f;
+    private int fallenBoxes = 0;
+    [SerializeField] private TextMeshProUGUI fallenBoxesText;
+    private HashSet<GameObject> countedBoxes = new HashSet<GameObject>();
+
     public static GameManager Instance;
 
     void Awake()
@@ -30,6 +40,8 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        fallenBoxesText.text = "Boxes Fallen: " + 0;
+
         cam = Camera.main;
         ball.DeactivateRb();
     }
@@ -86,5 +98,33 @@ public class GameManager : MonoBehaviour
         ball.Push(force);
         Slingshot.Instance.OnMouseUpEvent();
         ball.GetComponent<Ball>().Release();
+    }
+
+    public void UpdateFallenBoxes(GameObject box)
+    {
+        if (!countedBoxes.Contains(box))
+        {
+            countedBoxes.Add(box);
+            fallenBoxes++;
+            fallenBoxesText.text = "Boxes Fallen: " + fallenBoxes;
+
+            StartCoroutine(DestroyBoxAfterDelay(box));
+        }
+    }
+
+    private IEnumerator DestroyBoxAfterDelay(GameObject box)
+    {
+        yield return new WaitForSeconds(updateDelay);
+        Destroy(box);
+
+        if (fallenBoxes >= targetBoxes)
+        {
+            DisplayResult();
+        }
+    }
+
+    public void DisplayResult()
+    {
+        Debug.Log("Result: All boxes have fallen!");
     }
 }
