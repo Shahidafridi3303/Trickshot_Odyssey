@@ -12,6 +12,8 @@ public class Bomb : MonoBehaviour
     public GameObject bomb;
     public float effectDestroyDelay = 5;
 
+    private bool alreadyActivated;
+
     // Use this for initialization
     void Start()
     {
@@ -27,15 +29,17 @@ public class Bomb : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.CompareTag("Box") || other.gameObject.CompareTag("Ball"))
+        if (other.gameObject.CompareTag("Box") || other.gameObject.CompareTag("Platform"))
         {
-            bomb.gameObject.SetActive(false);
             explode();
         }
     }
-
+    
     void explode()
     {
+        if (alreadyActivated) return;
+
+        alreadyActivated = true;
         Collider2D[] objects = Physics2D.OverlapCircleAll(transform.position, fieldOfImpact, LayerToHit);
 
         foreach (Collider2D obj in objects)
@@ -45,6 +49,7 @@ public class Bomb : MonoBehaviour
             obj.GetComponent<Rigidbody2D>().AddForce(direction * force);
         }
 
+        bomb.gameObject.SetActive(false);
         CameraShake.Instance.Shake();
         GameObject explosionEffectIns = Instantiate(explosionEffect, transform.position, Quaternion.identity);
         explosionEffectIns.transform.localScale = new Vector3(0.4f, 0.4f, 0.4f);
