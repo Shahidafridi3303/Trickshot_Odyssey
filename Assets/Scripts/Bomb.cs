@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using EZCameraShake;
 
 public class Bomb : MonoBehaviour
 {
@@ -9,9 +8,9 @@ public class Bomb : MonoBehaviour
     public float force;
     public LayerMask LayerToHit;
 
-    public GameObject ExplosionEffect;
+    public GameObject explosionEffect;
     public GameObject bomb;
-    public float EffectDestroyDelay = 5;
+    public float effectDestroyDelay = 5;
 
     // Use this for initialization
     void Start()
@@ -46,10 +45,10 @@ public class Bomb : MonoBehaviour
             obj.GetComponent<Rigidbody2D>().AddForce(direction * force);
         }
 
-        CameraShaker.Instance.ShakeOnce(4, 4, 0.1f, 1f);
-        GameObject ExplosionEffectIns = Instantiate(ExplosionEffect, transform.position, Quaternion.identity);
-        Destroy(ExplosionEffectIns, EffectDestroyDelay);
-        Destroy(gameObject, EffectDestroyDelay);
+        CameraShake.Instance.Shake();
+        GameObject explosionEffectIns = Instantiate(explosionEffect, transform.position, Quaternion.identity);
+        explosionEffectIns.transform.localScale = new Vector3(0.4f, 0.4f, 0.4f);
+        Destroy(gameObject, effectDestroyDelay);
     }
 
     void OnDrawGizmosSelected()
