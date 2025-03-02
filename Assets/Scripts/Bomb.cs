@@ -21,10 +21,10 @@ public class Bomb : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            explode();
-        }
+        //if (Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    explode();
+        //}
     }
 
     private void OnCollisionEnter2D(Collision2D other)

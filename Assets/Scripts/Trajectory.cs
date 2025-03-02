@@ -2,30 +2,53 @@ using UnityEngine;
 
 public class Trajectory : MonoBehaviour
 {
-    [SerializeField] int dotsNumber;
-    [SerializeField] GameObject dotsParent;
-    [SerializeField] GameObject dotPrefab;
-    [SerializeField] float dotSpacing;
-    [SerializeField][Range(0.01f, 0.3f)] float dotMinScale;
-    [SerializeField][Range(0.3f, 1f)] float dotMaxScale;
+    [SerializeField] private int dotsNumber = 30; // Default value
+    [SerializeField] private GameObject dotsParent;
+    [SerializeField] private GameObject dotPrefab;
+    [SerializeField] private float dotSpacing;
+    [SerializeField][Range(0.01f, 0.3f)] private float dotMinScale;
+    [SerializeField][Range(0.3f, 1f)] private float dotMaxScale;
 
-    Transform[] dotsList;
+    private Transform[] dotsList;
+    private Vector2 pos;
+    private float timeStamp;
 
-    Vector2 pos;
-    //dot pos
-    float timeStamp;
+    public static Trajectory Instance;
 
-    //--------------------------------
+    void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+    }
+
     void Start()
     {
-        //hide trajectory in the start
         Hide();
-        //prepare dots
         PrepareDots();
+    }
+
+    void Update()
+    {
+        //if (Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    UpdateDotNumber(10);
+        //}
     }
 
     void PrepareDots()
     {
+        // Destroy previous dots if any
+        if (dotsList != null)
+        {
+            foreach (Transform dot in dotsList)
+            {
+                if (dot != null)
+                    Destroy(dot.gameObject);
+            }
+        }
+
         dotsList = new Transform[dotsNumber];
         dotPrefab.transform.localScale = Vector3.one * dotMaxScale;
 
@@ -34,9 +57,7 @@ public class Trajectory : MonoBehaviour
 
         for (int i = 0; i < dotsNumber; i++)
         {
-            dotsList[i] = Instantiate(dotPrefab, null).transform;
-            dotsList[i].parent = dotsParent.transform;
-
+            dotsList[i] = Instantiate(dotPrefab, dotsParent.transform).transform;
             dotsList[i].localScale = Vector3.one * scale;
             if (scale > dotMinScale)
                 scale -= scaleFactor;
@@ -48,12 +69,20 @@ public class Trajectory : MonoBehaviour
         timeStamp = dotSpacing;
         for (int i = 0; i < dotsNumber; i++)
         {
-            // OR pos = (ballPos+force*time)-((-Physics2D.gravity*time*time)/2f);
             pos.x = (ballPos.x + forceApplied.x * timeStamp);
             pos.y = (ballPos.y + forceApplied.y * timeStamp) - (Physics2D.gravity.magnitude * timeStamp * timeStamp) / 2f;
 
             dotsList[i].position = pos;
             timeStamp += dotSpacing;
+        }
+    }
+
+    public void UpdateDotNumber(int newNumber)
+    {
+        if (newNumber > 0)
+        {
+            dotsNumber = newNumber;
+            PrepareDots(); // Recreate dots with the new count
         }
     }
 

@@ -24,7 +24,7 @@ public class MainMenu : MonoBehaviour
         PlayButtonSound();
 
         // Wait for the sound to finish before loading the scene
-        yield return new WaitForSeconds(0.4f);
+        yield return new WaitForSeconds(0.25f);
 
         SceneManager.LoadScene(LoadScene);
     }
