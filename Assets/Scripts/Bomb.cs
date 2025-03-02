@@ -29,7 +29,7 @@ public class Bomb : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.CompareTag("Box") || other.gameObject.CompareTag("Platform"))
+        if (other.gameObject.CompareTag("Box") || other.gameObject.CompareTag("Platform") || other.gameObject.CompareTag("Ground"))
         {
             explode();
         }

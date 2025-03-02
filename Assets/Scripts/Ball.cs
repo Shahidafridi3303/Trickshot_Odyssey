@@ -7,7 +7,7 @@ public class Ball : MonoBehaviour
     private Rigidbody2D rb;
     private CircleCollider2D col;
 
-    [HideInInspector] public bool collided;
+    [HideInInspector] public int collisionCount = 0;
 
     [HideInInspector] public Vector3 pos { get { return transform.position; } }
 
@@ -19,7 +19,7 @@ public class Ball : MonoBehaviour
 
     public void Push(Vector2 force)
     {
-        rb.velocity = force; // Instant velocity change for accuracy
+        rb.velocity = force;
     }
 
     public void ActivateRb()
@@ -32,28 +32,34 @@ public class Ball : MonoBehaviour
         rb.velocity = Vector2.zero;
         rb.angularVelocity = 0f;
         rb.isKinematic = true;
-        transform.rotation = Quaternion.identity; // Reset rotation to avoid carryover
+        transform.rotation = Quaternion.identity;
     }
 
     public void Release()
     {
+        collisionCount = 0; // Reset collision count on release
         PostTrajectory.instance.Clear();
-        collided = false;
         StartCoroutine(CreatePathPoints());
     }
 
     IEnumerator CreatePathPoints()
     {
-        while (true)
+        while (collisionCount < 2) 
         {
-            if (collided) break;
             PostTrajectory.instance.CreateCurrentPathPoint(transform.position);
             yield return new WaitForSeconds(PostTrajectory.instance.timeInterval);
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionEnter2D(Collision2D other)
     {
-        collided = true;
+        StartCoroutine(IncrementCollisionCount());
     }
+
+    private IEnumerator IncrementCollisionCount()
+    {
+        yield return new WaitForSeconds(0.08f); 
+        collisionCount++;
+    }
+
 }

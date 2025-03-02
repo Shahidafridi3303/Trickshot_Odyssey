@@ -13,6 +13,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] float pushForce = 4f;
     [SerializeField] float maxDragDistance = 2.5f; // Set your preferred limit
 
+    private Coroutine resetBallCoroutine;
+    [SerializeField] private float resetPositionDelay = 5f;
+
     bool isDragging = false;
 
     Vector2 startPoint;
@@ -100,6 +103,27 @@ public class GameManager : MonoBehaviour
         ball.Push(force);
         Slingshot.Instance.OnMouseUpEvent();
         ball.GetComponent<Ball>().Release();
+
+        // Restart the auto-reset coroutine
+        if (resetBallCoroutine != null)
+        {
+            StopCoroutine(resetBallCoroutine);
+        }
+
+        resetBallCoroutine = StartCoroutine(AutoSetDragPosition());
+    }
+
+    IEnumerator AutoSetDragPosition()
+    {
+        yield return new WaitForSeconds(resetPositionDelay);
+
+        // Move ball to drag start position and reset velocity
+        ball.DeactivateRb();
+        ball.transform.position = Slingshot.Instance.idlePosition.position;
+        ball.transform.rotation = Quaternion.identity;
+        ball.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+
+        ball.collisionCount = 5;
     }
 
     public void UpdateFallenBoxes(GameObject box)

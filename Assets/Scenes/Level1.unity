@@ -3589,6 +3589,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5707961205032043206}
     m_Modifications:
+    - target: {fileID: 177525381901582946, guid: d0c51a66b2fc9c74fbd6576fb5b34376, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 6200000, guid: fc46d221fdaa4a846859bc433cc7e0b7, type: 2}
     - target: {fileID: 381855317215986587, guid: d0c51a66b2fc9c74fbd6576fb5b34376, type: 3}
       propertyPath: m_LocalPosition.x
       value: 5.84
@@ -3629,6 +3633,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3717823900793332015, guid: d0c51a66b2fc9c74fbd6576fb5b34376, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 6200000, guid: fc46d221fdaa4a846859bc433cc7e0b7, type: 2}
     - target: {fileID: 6156609204796249697, guid: d0c51a66b2fc9c74fbd6576fb5b34376, type: 3}
       propertyPath: m_Name
       value: Bomb (1)
@@ -4852,6 +4860,14 @@ PrefabInstance:
     - target: {fileID: 4602320607373709698, guid: 3d2989d799e0e364781944f60edc23b5, type: 3}
       propertyPath: m_Name
       value: Main Camera
+      objectReference: {fileID: 0}
+    - target: {fileID: 6547383126298069108, guid: 3d2989d799e0e364781944f60edc23b5, type: 3}
+      propertyPath: shakeDuration
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6547383126298069108, guid: 3d2989d799e0e364781944f60edc23b5, type: 3}
+      propertyPath: shakeMagnitude
+      value: 0.2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
