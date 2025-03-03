@@ -42,6 +42,7 @@ public class GameManager : MonoBehaviour
     public GameObject[] AvailableBalls;
 
     private int maxBalls;
+    private bool successPanelOpened;
 
     void Awake()
     {
@@ -149,7 +150,7 @@ public class GameManager : MonoBehaviour
 
         ball.collisionCount = 5;
 
-        if (currentBalls <= 0)
+        if (currentBalls <= -1)
         {
             OpenFailurePanel();
         }
@@ -188,9 +189,14 @@ public class GameManager : MonoBehaviour
         Timer.Instance.StopTimer();
         successPanel.SetActive(true);
 
+        successPanelOpened = true;
+
         // Calculate starCount based on the percentage of balls used
         float percentageUsed = 1.0f - ((float)currentBalls / maxBalls);
         int starCount = Mathf.CeilToInt(percentageUsed * 3);
+
+        // Invert the star count logic
+        starCount = 4 - starCount;
 
         // Ensure starCount is between 1 and 3
         starCount = Mathf.Clamp(starCount, 1, 3);
@@ -208,8 +214,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
+
+
     public void OpenFailurePanel()
     {
+        if (successPanelOpened) return;
         Timer.Instance.StopTimer();
         failurePanel.SetActive(true);
     }
