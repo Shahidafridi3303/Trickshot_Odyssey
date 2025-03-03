@@ -36,7 +36,7 @@ public class Timer : MonoBehaviour
         }
         currentTime = 0;
         UpdateTimerDisplay();
-        GameManager.Instance.OpenResultPanel();
+        GameManager.Instance.OpenFailurePanel();
     }
 
     private void UpdateTimerDisplay()

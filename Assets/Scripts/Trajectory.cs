@@ -77,7 +77,7 @@ public class Trajectory : MonoBehaviour
             RaycastHit2D hit = Physics2D.Raycast(currentPosition, direction, distance, obstacleLayer);
 
             // Draw ray for debugging
-            Debug.DrawRay(currentPosition, direction * (distance * 1.7f), Color.red, 0.1f);
+            Debug.DrawRay(currentPosition, direction * (distance), Color.red, 0.1f);
 
             if (hit.collider != null && !reflected) // Handle reflection only once
             {
@@ -85,7 +85,7 @@ public class Trajectory : MonoBehaviour
                 dotsList[i].position = hit.point;
 
                 // Reflect velocity based on surface normal
-                currentVelocity = Vector2.Reflect(currentVelocity, hit.normal) * 8.5f; // Apply damping after reflection
+                currentVelocity = Vector2.Reflect(currentVelocity, hit.normal) * 0.8f; // Apply damping after reflection
 
                 // Restart trajectory from reflection point
                 currentPosition = hit.point;

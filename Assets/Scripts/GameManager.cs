@@ -3,9 +3,11 @@ using Unity.VisualScripting;
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Microsoft.Unity.VisualStudio.Editor;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager Instance;
     Camera cam;
 
     public Ball ball;
@@ -15,6 +17,10 @@ public class GameManager : MonoBehaviour
 
     private Coroutine resetBallCoroutine;
     [SerializeField] private float resetPositionDelay = 5f;
+
+    public GameObject successPanel;
+    public GameObject[] successStars;
+    public GameObject failurePanel;
 
     bool isDragging = false;
 
@@ -31,9 +37,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI fallenBoxesText;
     private HashSet<GameObject> countedBoxes = new HashSet<GameObject>();
 
-    public GameObject resultPanel;
+    // for showing available balls ui
+    public int currentBalls = 14;
+    public GameObject[] AvailableBalls;
 
-    public static GameManager Instance;
+    private int maxBalls;
 
     void Awake()
     {
@@ -45,14 +53,22 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        maxBalls = currentBalls;
         fallenBoxesText.text = "Boxes Fallen: " + 0;
 
         cam = Camera.main;
         ball.DeactivateRb();
+
+        UpdateBallCount();
     }
 
     void Update()
     {
+        //if (Input.GetKeyDown(KeyCode.Space))
+        //{
+            
+        //}
+
         if (isDragging)
         {
             OnDrag();
@@ -73,6 +89,14 @@ public class GameManager : MonoBehaviour
 
     void OnDragStart()
     {
+        if (currentBalls <= 0)
+        {
+            OpenFailurePanel();
+        }
+
+        currentBalls--;
+        UpdateBallCount();
+
         ball.DeactivateRb();
         ball.transform.position = Slingshot.Instance.idlePosition.position;
         ball.transform.rotation = Quaternion.identity;
@@ -124,6 +148,16 @@ public class GameManager : MonoBehaviour
         ball.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
 
         ball.collisionCount = 5;
+
+        if (currentBalls <= 0)
+        {
+            OpenFailurePanel();
+        }
+        else
+        {
+            currentBalls--;
+            UpdateBallCount();
+        }
     }
 
     public void UpdateFallenBoxes(GameObject box)
@@ -145,18 +179,53 @@ public class GameManager : MonoBehaviour
 
         if (fallenBoxes >= targetBoxes)
         {
-            DisplayResult();
+            OpenSuccessPanel();
         }
     }
 
-    public void DisplayResult()
-    {
-        OpenResultPanel();
-    }
-
-    public void OpenResultPanel()
+    public void OpenSuccessPanel()
     {
         Timer.Instance.StopTimer();
-        resultPanel.SetActive(true);
+        successPanel.SetActive(true);
+
+        // Calculate starCount based on the percentage of balls used
+        float percentageUsed = 1.0f - ((float)currentBalls / maxBalls);
+        int starCount = Mathf.CeilToInt(percentageUsed * 3);
+
+        // Ensure starCount is between 1 and 3
+        starCount = Mathf.Clamp(starCount, 1, 3);
+
+        for (int i = 0; i < successStars.Length; i++)
+        {
+            if (i < starCount)
+            {
+                successStars[i].gameObject.SetActive(true);
+            }
+            else
+            {
+                successStars[i].gameObject.SetActive(false);
+            }
+        }
+    }
+
+    public void OpenFailurePanel()
+    {
+        Timer.Instance.StopTimer();
+        failurePanel.SetActive(true);
+    }
+
+    public void UpdateBallCount()
+    {
+        for (int i = 0; i < AvailableBalls.Length; i++)
+        {
+            if (i < currentBalls)
+            {
+                AvailableBalls[i].gameObject.SetActive(true);
+            }
+            else
+            {
+                AvailableBalls[i].gameObject.SetActive(false);
+            }
+        }
     }
 }

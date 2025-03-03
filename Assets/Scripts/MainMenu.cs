@@ -34,12 +34,6 @@ public class MainMenu : MonoBehaviour
         StartCoroutine(WaitAndLoadScene(1));
     }
 
-    public void PlayAgain()
-    {
-        Time.timeScale = 1;
-        StartCoroutine(WaitAndLoadScene(1));
-    }
-
     public void PauseGame()
     {
         PlayButtonSound();
@@ -52,6 +46,37 @@ public class MainMenu : MonoBehaviour
         Time.timeScale = 1f;
         PlayButtonSound();
         Timer.Instance.ResumeTimer();
+    }
+
+    public void PlayAgain()
+    {
+        Time.timeScale = 1;
+        PlayButtonSound();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void NextLevel()
+    {
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        int nextSceneIndex = currentSceneIndex + 1;
+
+        // Check if the next level exists
+        if (nextSceneIndex < SceneManager.sceneCountInBuildSettings)
+        {
+            StartCoroutine(WaitAndLoadScene(nextSceneIndex));
+        }
+        else
+        {
+            Debug.LogWarning("Next level does not exist in the build settings.");
+        }
+    }
+
+
+    public void LoadMainMenuWithoutWait()
+    {
+        Time.timeScale = 1f;
+        PlayButtonSound();
+        SceneManager.LoadScene(0);
     }
 
     public void LoadMainMenu()
