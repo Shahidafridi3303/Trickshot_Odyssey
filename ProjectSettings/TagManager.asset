@@ -9,6 +9,7 @@ TagManager:
   - Ball
   - Platform
   - Ground
+  - Chains
   layers:
   - Default
   - TransparentFX

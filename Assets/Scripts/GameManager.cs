@@ -90,11 +90,6 @@ public class GameManager : MonoBehaviour
 
     void OnDragStart()
     {
-        if (currentBalls <= 0)
-        {
-            OpenFailurePanel();
-        }
-
         currentBalls--;
         UpdateBallCount();
 
@@ -135,7 +130,10 @@ public class GameManager : MonoBehaviour
             StopCoroutine(resetBallCoroutine);
         }
 
-        resetBallCoroutine = StartCoroutine(AutoSetDragPosition());
+        if (successPanelOpened == false)
+        {
+            resetBallCoroutine = StartCoroutine(AutoSetDragPosition());
+        }
     }
 
     IEnumerator AutoSetDragPosition()

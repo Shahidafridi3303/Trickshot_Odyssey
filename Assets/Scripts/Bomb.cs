@@ -2,6 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum BombState
+{
+    Normal,
+    Hanging
+}
+
 public class Bomb : MonoBehaviour
 {
     public float fieldOfImpact;
@@ -13,10 +19,24 @@ public class Bomb : MonoBehaviour
     public float effectDestroyDelay = 5;
 
     private bool alreadyActivated;
+    public BombState bombState;
+    public GameObject chains;
+
+    private Rigidbody2D rb;
+    private bool canExplode;
+
+    void Awake()
+    {
+        rb = GetComponent<Rigidbody2D>();
+    }
 
     // Use this for initialization
     void Start()
     {
+        if (bombState == BombState.Hanging)
+        {
+            rb.isKinematic = true;
+        }
     }
 
     void Update()
@@ -31,7 +51,10 @@ public class Bomb : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Box") || other.gameObject.CompareTag("Platform") || other.gameObject.CompareTag("Ground"))
         {
-            explode();
+            if (bombState == BombState.Hanging && canExplode)
+            {
+                explode();
+            }
         }
     }
     
@@ -60,5 +83,12 @@ public class Bomb : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, fieldOfImpact);
+    }
+
+    public void Trigger()
+    {
+        canExplode = true;
+        Destroy(chains);
+        rb.isKinematic = false;
     }
 }

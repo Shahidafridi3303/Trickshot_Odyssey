@@ -50,9 +50,9 @@ public class MainMenu : MonoBehaviour
 
     public void PlayAgain()
     {
-        Time.timeScale = 1;
-        PlayButtonSound();
+        //PlayButtonSound();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        Time.timeScale = 1;
     }
 
     public void NextLevel()

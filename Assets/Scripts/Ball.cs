@@ -53,6 +53,21 @@ public class Ball : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
+        if (other.gameObject.CompareTag("Chains"))
+        {
+            //Bomb bombScript = GetComponent<Bomb>();
+            Bomb bombScript = other.gameObject.GetComponentInParent<Bomb>();
+
+            if (bombScript != null)
+            {
+                bombScript.Trigger();
+            }
+            else
+            {
+                Debug.Log("its null");
+            }
+        }
+
         StartCoroutine(IncrementCollisionCount());
     }
 
