@@ -35,6 +35,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float updateDelay = 2f;
     private int fallenBoxes = 0;
     [SerializeField] private TextMeshProUGUI fallenBoxesText;
+    [SerializeField] private TextMeshProUGUI BoxesCount;
     private HashSet<GameObject> countedBoxes = new HashSet<GameObject>();
 
     // for showing available balls ui
@@ -55,7 +56,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         maxBalls = currentBalls;
-        fallenBoxesText.text = "Boxes Fallen: " + 0;
+        fallenBoxesText.text = "Boxes Fallen: " + fallenBoxes + "/" + targetBoxes;
 
         cam = Camera.main;
         ball.DeactivateRb();
@@ -140,6 +141,11 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(resetPositionDelay);
 
+        ResetBall();
+    }
+
+    public void ResetBall()
+    {
         // Move ball to drag start position and reset velocity
         ball.DeactivateRb();
         ball.transform.position = Slingshot.Instance.idlePosition.position;
@@ -147,16 +153,6 @@ public class GameManager : MonoBehaviour
         ball.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
 
         ball.collisionCount = 5;
-
-        if (currentBalls <= -1)
-        {
-            OpenFailurePanel();
-        }
-        else
-        {
-            currentBalls--;
-            UpdateBallCount();
-        }
     }
 
     public void UpdateFallenBoxes(GameObject box)
@@ -165,7 +161,7 @@ public class GameManager : MonoBehaviour
         {
             countedBoxes.Add(box);
             fallenBoxes++;
-            fallenBoxesText.text = "Boxes Fallen: " + fallenBoxes;
+            fallenBoxesText.text = "Boxes Fallen: " + fallenBoxes + "/" + targetBoxes;
 
             StartCoroutine(DestroyBoxAfterDelay(box));
         }
@@ -189,6 +185,26 @@ public class GameManager : MonoBehaviour
 
         successPanelOpened = true;
 
+        CalculateStars();
+
+        DestroyBalloons();
+    }
+
+    public void DestroyBalloons()
+    {
+        GameObject balloonParent = GameObject.Find("Balloon");
+
+        if (balloonParent != null)
+        {
+            foreach (Transform child in balloonParent.transform)
+            {
+                Destroy(child.gameObject);
+            }
+        }
+    }
+
+    public void CalculateStars()
+    {
         // Calculate starCount based on the percentage of balls used
         float percentageUsed = 1.0f - ((float)currentBalls / maxBalls);
         int starCount = Mathf.CeilToInt(percentageUsed * 3);
@@ -212,8 +228,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
-
     public void OpenFailurePanel()
     {
         if (successPanelOpened) return;
@@ -233,6 +247,17 @@ public class GameManager : MonoBehaviour
             {
                 AvailableBalls[i].gameObject.SetActive(false);
             }
+        }
+
+        BoxesCount.text = "x" + currentBalls;
+    }
+
+    public void IncrementBallCount()
+    {
+        if (currentBalls < 13)
+        {
+            currentBalls = targetBoxes;//currentBalls + 2;
+            UpdateBallCount();
         }
     }
 }

@@ -55,6 +55,10 @@ public class Bomb : MonoBehaviour
             {
                 explode();
             }
+            else
+            {
+                explode();
+            }
         }
     }
     
