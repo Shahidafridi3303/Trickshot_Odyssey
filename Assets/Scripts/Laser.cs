@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,30 +7,29 @@ public class Laser : MonoBehaviour
     [SerializeField] private float defDistanceRay = 100;
     public Transform laserFirePoint;
     public LineRenderer m_lineRenderer;
-    Transform m_transform;
-
-    private void Awake()
-    {
-        m_transform = GetComponent<Transform>();
-    }
+    private bool isActive = true;
+    public bool autoReactivate = false;
+    public float reactivateDelay = 3f;
+    public Button laserDeactivatorButton;
 
     private void Update()
     {
-        ShootLaser();
+        if (isActive)
+        {
+            ShootLaser();
+        }
     }
 
     void ShootLaser()
     {
-        if (Physics2D.Raycast(m_transform.position, transform.right))
+        RaycastHit2D _hit = Physics2D.Raycast(laserFirePoint.position, transform.up);
+
+        if (_hit.collider != null && _hit.collider.CompareTag("Ball"))
         {
-            RaycastHit2D _hit = Physics2D.Raycast(laserFirePoint.position, transform.up);
-            Draw2DRay(laserFirePoint.position, _hit.point);
-            //Draw2DRay(laserFirePoint.position, laserFirePoint.transform.right * defDistanceRay);
+            GameManager.Instance.ResetBall();
         }
-        else
-        {
-            Draw2DRay(laserFirePoint.position, laserFirePoint.transform.right * defDistanceRay);
-        }
+
+        Draw2DRay(laserFirePoint.position, _hit.collider != null ? _hit.point : laserFirePoint.transform.right * defDistanceRay);
     }
 
     void Draw2DRay(Vector2 startPos, Vector2 endPos)
@@ -39,4 +38,29 @@ public class Laser : MonoBehaviour
         m_lineRenderer.SetPosition(1, endPos);
     }
 
+    public void DeactivateLaser()
+    {
+        isActive = false;
+        m_lineRenderer.enabled = false;
+
+        if (autoReactivate)
+        {
+            StartCoroutine(ReactivateLaserAfterDelay());
+        }
+
+        laserDeactivatorButton.UpdateLeverState(false);
+    }
+
+    public void ActivateLaser()
+    {
+        isActive = true;
+        m_lineRenderer.enabled = true;
+        laserDeactivatorButton.UpdateLeverState(true);
+    }
+
+    IEnumerator ReactivateLaserAfterDelay()
+    {
+        yield return new WaitForSeconds(reactivateDelay);
+        ActivateLaser();
+    }
 }

@@ -256,7 +256,7 @@ public class GameManager : MonoBehaviour
     {
         if (currentBalls < 13)
         {
-            currentBalls = targetBoxes;//currentBalls + 2;
+            currentBalls = currentBalls + 2;
             UpdateBallCount();
         }
     }

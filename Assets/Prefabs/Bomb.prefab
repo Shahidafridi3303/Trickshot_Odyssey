@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 61e23d0f99e1e194c8f53b0118016f84, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.9245283, g: 0.8329477, b: 0.8329477, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -139,6 +139,8 @@ MonoBehaviour:
   explosionEffect: {fileID: 100006, guid: 42f257b24c959a44794a35d032e9da12, type: 3}
   bomb: {fileID: 2599253447387078362}
   effectDestroyDelay: 5
+  bombState: 0
+  chains: {fileID: 0}
 --- !u!58 &3717823900793332015
 CircleCollider2D:
   m_ObjectHideFlags: 0
