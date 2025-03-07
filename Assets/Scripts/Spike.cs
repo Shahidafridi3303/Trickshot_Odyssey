@@ -4,13 +4,11 @@ using UnityEngine;
 
 public class Spike : MonoBehaviour
 {
-    // Start is called before the first frame update
     void Start()
     {
         
     }
 
-    // Update is called once per frame
     void Update()
     {
         
@@ -20,6 +18,7 @@ public class Spike : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Ball"))
         {
+            Ball.Instance.CameraShake_ResetBall();
             GameManager.Instance.ResetBall();
             Destroy(gameObject);
         }

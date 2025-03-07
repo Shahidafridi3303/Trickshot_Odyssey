@@ -139,7 +139,7 @@ MonoBehaviour:
   speed: 2
   minDistance: 0
   maxDistance: 2.8
-  initialMovement: 0
+  initialMovement: 1
 --- !u!1 &3288662316448821788
 GameObject:
   m_ObjectHideFlags: 0

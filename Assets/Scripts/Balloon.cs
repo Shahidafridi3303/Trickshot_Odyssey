@@ -3,38 +3,60 @@ using System.Collections;
 
 public class Balloon : MonoBehaviour
 {
-    public enum MoveDirection { Left, Right }
-
+    public Transform leftPosition;
+    public Transform rightPosition;
     public float speed = 2f;
-    public float maxDistance = 10f;
-    public MoveDirection moveDirection = MoveDirection.Right;
-    public float startDelay = 0f;
-
-    private Vector3 startPosition;
+    private bool movingRight = true;
     private bool canMove = false;
+    private float randomOffset;
+    public float waveAmplitude = 1f;
+    public float waveFrequency = 2f;
 
-    void Start()
+    public static Balloon Instance;
+    private bool alreadyTravelling;
+
+    void Awake()
     {
-        startPosition = transform.position;
-        StartCoroutine(StartMovementAfterDelay());
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        randomOffset = Random.Range(0f, Mathf.PI * 2);
     }
 
-    IEnumerator StartMovementAfterDelay()
+    public void EnableMove(bool right)
     {
-        yield return new WaitForSeconds(startDelay);
+        alreadyTravelling = true;
+        movingRight = right;
         canMove = true;
+    }
+
+    public bool AlreadyTravelling()
+    {
+        return alreadyTravelling;
     }
 
     void Update()
     {
         if (!canMove) return;
 
-        Vector3 direction = moveDirection == MoveDirection.Right ? Vector3.right : Vector3.left;
-        transform.position += direction * speed * Time.deltaTime;
+        Transform target = movingRight ? rightPosition : leftPosition;
+        //transform.position = Vector3.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
 
-        if (Vector3.Distance(startPosition, transform.position) >= maxDistance)
+        Vector3 direction = (target.position - transform.position).normalized;
+
+        // Adding sinusoidal motion to create a zigzag effect
+        float waveOffset = Mathf.Sin(Time.time * waveFrequency + randomOffset) * waveAmplitude;
+        Vector3 perpendicular = Vector3.Cross(direction, Vector3.forward).normalized;
+        Vector3 newPosition = transform.position + direction * speed * Time.deltaTime + perpendicular * waveOffset * Time.deltaTime;
+
+        transform.position = newPosition;
+
+        if (Vector3.Distance(transform.position, target.position) < 0.1f)
         {
-            Destroy(gameObject);
+            alreadyTravelling = false;
+            transform.position = target.position;
+            canMove = false;
         }
     }
 
@@ -43,7 +65,8 @@ public class Balloon : MonoBehaviour
         if (other.gameObject.CompareTag("Ball"))
         {
             GameManager.Instance.IncrementBallCount();
-            Destroy(gameObject);
+            canMove = false;
+            transform.position = movingRight ? rightPosition.position : leftPosition.position;
         }
     }
 }

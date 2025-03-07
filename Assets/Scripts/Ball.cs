@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
+    public GameObject explosionEffect;
+
     private Rigidbody2D rb;
     private CircleCollider2D col;
 
@@ -11,8 +13,15 @@ public class Ball : MonoBehaviour
 
     [HideInInspector] public Vector3 pos { get { return transform.position; } }
 
+    public static Ball Instance;
+
     void Awake()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<CircleCollider2D>();
     }
@@ -77,4 +86,10 @@ public class Ball : MonoBehaviour
         collisionCount++;
     }
 
+    public void CameraShake_ResetBall()
+    {
+        CameraShake.Instance.Shake();
+        GameObject explosionEffectIns = Instantiate(explosionEffect, transform.position, Quaternion.identity);
+        explosionEffectIns.transform.localScale = new Vector3(0.4f, 0.4f, 0.4f);
+    }
 }

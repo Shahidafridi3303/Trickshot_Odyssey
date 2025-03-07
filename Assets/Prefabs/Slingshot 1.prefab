@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: e2efc036e684c944a80d85f634f4e45d, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.22352941, g: 0.79607844, b: 0.68235296, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -243,23 +243,23 @@ LineRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 1, g: 0.9422695, b: 0.6179246, a: 1}
-      key1: {r: 1, g: 0.19644552, b: 0.1462264, a: 1}
-      key2: {r: 0.1429196, g: 0, b: 0.4811321, a: 0}
-      key3: {r: 0, g: 0, b: 0, a: 0}
-      key4: {r: 0.15287323, g: 0.15287323, b: 0.15287323, a: 0}
-      key5: {r: 0.4716981, g: 0.39573428, b: 0, a: 0}
+      key0: {r: 0.20754719, g: 0.09883783, b: 0.016642937, a: 1}
+      key1: {r: 0.2264151, g: 0.09396816, b: 0.013883951, a: 1}
+      key2: {r: 0.4811321, g: 0.21353237, b: 0.0022694964, a: 0}
+      key3: {r: 0.4811321, g: 0.21353237, b: 0.0022694964, a: 0}
+      key4: {r: 1, g: 1, b: 1, a: 0}
+      key5: {r: 1, g: 1, b: 1, a: 0}
       key6: {r: 1, g: 1, b: 1, a: 0}
       key7: {r: 1, g: 1, b: 1, a: 0}
       ctime0: 0
-      ctime1: 24094
-      ctime2: 30840
-      ctime3: 35273
-      ctime4: 40092
-      ctime5: 46646
+      ctime1: 65342
+      ctime2: 64571
+      ctime3: 64571
+      ctime4: 50501
+      ctime5: 50501
       ctime6: 50501
       ctime7: 50501
-      atime0: 0
+      atime0: 45682
       atime1: 65535
       atime2: 0
       atime3: 0
@@ -269,7 +269,7 @@ LineRenderer:
       atime7: 0
       m_Mode: 0
       m_ColorSpace: 0
-      m_NumColorKeys: 7
+      m_NumColorKeys: 2
       m_NumAlphaKeys: 2
     numCornerVertices: 0
     numCapVertices: 3
@@ -379,23 +379,23 @@ LineRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 1, g: 0.9422695, b: 0.6179246, a: 1}
-      key1: {r: 1, g: 1, b: 1, a: 1}
-      key2: {r: 1, g: 0.19644552, b: 0.1462264, a: 0}
-      key3: {r: 0.1429196, g: 0, b: 0.4811321, a: 0}
-      key4: {r: 0, g: 0, b: 0, a: 0}
-      key5: {r: 0.15287323, g: 0.15287323, b: 0.15287323, a: 0}
-      key6: {r: 0.4716981, g: 0.39573428, b: 0, a: 0}
+      key0: {r: 0.20754719, g: 0.09883783, b: 0.016642937, a: 1}
+      key1: {r: 0.2264151, g: 0.09396816, b: 0.013883951, a: 1}
+      key2: {r: 0.4811321, g: 0.21353237, b: 0.0022694964, a: 0}
+      key3: {r: 0.4811321, g: 0.21353237, b: 0.0022694964, a: 0}
+      key4: {r: 1, g: 1, b: 1, a: 0}
+      key5: {r: 1, g: 1, b: 1, a: 0}
+      key6: {r: 1, g: 1, b: 1, a: 0}
       key7: {r: 1, g: 1, b: 1, a: 0}
       ctime0: 0
-      ctime1: 14649
-      ctime2: 24094
-      ctime3: 30840
-      ctime4: 35273
-      ctime5: 40092
-      ctime6: 46646
+      ctime1: 65342
+      ctime2: 64571
+      ctime3: 64571
+      ctime4: 50501
+      ctime5: 50501
+      ctime6: 50501
       ctime7: 50501
-      atime0: 0
+      atime0: 45682
       atime1: 65535
       atime2: 0
       atime3: 0
@@ -405,7 +405,7 @@ LineRenderer:
       atime7: 0
       m_Mode: 0
       m_ColorSpace: 0
-      m_NumColorKeys: 8
+      m_NumColorKeys: 2
       m_NumAlphaKeys: 2
     numCornerVertices: 0
     numCapVertices: 3
@@ -725,7 +725,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0c32d008a268fd4c9b36b782cb22c5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collided: 0
+  explosionEffect: {fileID: 100006, guid: 42f257b24c959a44794a35d032e9da12, type: 3}
+  collisionCount: 0
 --- !u!1 &6055495805223017286
 GameObject:
   m_ObjectHideFlags: 0
@@ -937,9 +938,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ball: {fileID: 6108514459457287229}
   trajectory: {fileID: 0}
-  pushForce: 40
+  pushForce: 50
   maxDragDistance: 0.3
+  resetPositionDelay: 5
+  successPanel: {fileID: 0}
+  successStars:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  failurePanel: {fileID: 0}
   targetBoxes: 14
   updateDelay: 1
   fallenBoxesText: {fileID: 0}
-  resultPanel: {fileID: 0}
+  BoxesCount: {fileID: 0}
+  currentBalls: 14
+  AvailableBalls:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
