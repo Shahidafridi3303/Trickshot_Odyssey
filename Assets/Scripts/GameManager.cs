@@ -5,10 +5,18 @@ using System.Collections;
 using System.Collections.Generic;
 using Microsoft.Unity.VisualStudio.Editor;
 
+public enum BallIdentity
+{
+    Bouncyball,
+    Lootball
+}
+
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
     Camera cam;
+
+    public BallIdentity ballIdentity = BallIdentity.Bouncyball;
 
     public Ball ball;
     public Trajectory trajectory;
@@ -35,15 +43,24 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float updateDelay = 2f;
     private int fallenBoxes = 0;
     [SerializeField] private TextMeshProUGUI fallenBoxesText;
-    [SerializeField] private TextMeshProUGUI BoxesCount;
+    [SerializeField] private TextMeshProUGUI BallsCount;
     private HashSet<GameObject> countedBoxes = new HashSet<GameObject>();
 
     // for showing available balls ui
     public int currentBalls = 14;
     public GameObject[] AvailableBalls;
-
     private int maxBalls;
+
     private bool successPanelOpened;
+
+    [SerializeField] private TextMeshProUGUI LootBallsCountL;
+    [SerializeField] private TextMeshProUGUI LootBallsCountR;
+    public GameObject SlingshotBase;
+    public int currentLootBalls = 3;
+    private int maxLootballs = 3;
+    public int lootBalls;
+
+    private Vector3 startPosition;
 
     void Awake()
     {
@@ -55,7 +72,12 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        startPosition = transform.position;
+        LootBallsCountL.gameObject.SetActive(false);
+        LootBallsCountR.gameObject.SetActive(false);
+
         maxBalls = currentBalls;
+        lootBalls = maxLootballs;
         fallenBoxesText.text = "Boxes Fallen: " + fallenBoxes + "/" + targetBoxes;
 
         cam = Camera.main;
@@ -91,9 +113,6 @@ public class GameManager : MonoBehaviour
 
     void OnDragStart()
     {
-        currentBalls--;
-        UpdateBallCount();
-
         ball.DeactivateRb();
         ball.transform.position = Slingshot.Instance.idlePosition.position;
         ball.transform.rotation = Quaternion.identity;
@@ -120,6 +139,17 @@ public class GameManager : MonoBehaviour
 
     void OnDragEnd()
     {
+        if (ballIdentity == BallIdentity.Bouncyball)
+        {
+            currentBalls--;
+            UpdateBallCount();
+        }
+        else if(ballIdentity == BallIdentity.Lootball)
+        {
+            currentLootBalls--;
+            UpdateLootBallCount();
+        }
+
         ball.ActivateRb();
         ball.Push(force);
         Slingshot.Instance.OnMouseUpEvent();
@@ -141,7 +171,38 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(resetPositionDelay);
 
-        ResetBall();
+        if (ballIdentity == BallIdentity.Bouncyball)
+        {
+            if (currentBalls == 0)
+            {
+                OpenFailurePanel();
+            }
+            else
+            {
+                ResetBall();
+            }
+        }
+        else if (ballIdentity == BallIdentity.Lootball)
+        {
+            if (currentLootBalls == 0)
+            {
+                ballIdentity = BallIdentity.Bouncyball;
+                lootBalls = maxLootballs;
+                LootBallsCountL.text = "x" + currentLootBalls;
+                LootBallsCountR.text = currentLootBalls + "x";
+
+                LootBallsCountL.gameObject.SetActive(false);
+                LootBallsCountR.gameObject.SetActive(false);
+                SlingshotBase.gameObject.SetActive(true);
+
+                transform.position = startPosition;
+                Slingshot.Instance.UpdateStripPosition();
+            }
+            else
+            {
+                ResetBall();
+            }
+        }
     }
 
     public void ResetBall()
@@ -249,7 +310,7 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        BoxesCount.text = "x" + currentBalls;
+        BallsCount.text = "x" + currentBalls;
     }
 
     public void IncrementBallCount()
@@ -259,5 +320,28 @@ public class GameManager : MonoBehaviour
             currentBalls = currentBalls + 2;
             UpdateBallCount();
         }
+    }
+
+    public void ActivateLootballs(bool Left)
+    {
+        if (Left)
+        {
+            LootBallsCountL.gameObject.SetActive(true);
+            LootBallsCountL.text = "x" + currentLootBalls;
+        }
+        else
+        {
+            LootBallsCountR.gameObject.SetActive(true);
+            LootBallsCountR.text = currentLootBalls + "x";
+        }
+
+        ballIdentity = BallIdentity.Lootball;
+        SlingshotBase.gameObject.SetActive(false);
+    }
+
+    public void UpdateLootBallCount()
+    {
+        LootBallsCountL.text = "x" + currentLootBalls;
+        LootBallsCountR.text = currentLootBalls + "x";
     }
 }

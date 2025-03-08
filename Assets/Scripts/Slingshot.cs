@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Slingshot : MonoBehaviour
 {
@@ -33,6 +34,12 @@ public class Slingshot : MonoBehaviour
         lineRenderers[1].SetPosition(0, stripPositions[1].position);
 
         ResetStrips();
+    }
+
+    public void UpdateStripPosition()
+    {
+        lineRenderers [0].SetPosition(0, stripPositions [0].position);
+        lineRenderers [1].SetPosition(0, stripPositions [1].position);
     }
 
     void Update()
