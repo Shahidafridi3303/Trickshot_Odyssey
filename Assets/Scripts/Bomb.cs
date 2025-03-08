@@ -51,9 +51,12 @@ public class Bomb : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Box") || other.gameObject.CompareTag("Platform") || other.gameObject.CompareTag("Ground"))
         {
-            if (bombState == BombState.Hanging && canExplode)
+            if (bombState == BombState.Hanging)
             {
-                explode();
+                if (canExplode)
+                {
+                    explode();
+                }
             }
             else
             {
