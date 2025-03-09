@@ -1,4 +1,5 @@
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
 
 public class Trajectory : MonoBehaviour
 {
@@ -10,6 +11,9 @@ public class Trajectory : MonoBehaviour
     [SerializeField][Range(0.3f, 1f)] private float dotMaxScale = 0.3f;
     [SerializeField] private LayerMask obstacleLayer;
     public float forceScale = 0.3f; // Add a force scale factor
+    
+    float timeStamp;
+    Vector2 pos;
 
     private Transform[] dotsList;
 
@@ -55,50 +59,65 @@ public class Trajectory : MonoBehaviour
         }
     }
 
-    public void UpdateDots(Vector3 ballPos, Vector2 forceApplied)
+    public void UpdateDots(Vector3 ballPos, Vector2 forceApplied, bool Lootcase)
     {
-        Vector2 currentVelocity = forceApplied * forceScale;
-        Vector2 currentPosition = ballPos;
-        float cumulativeTime = 0;
-
-        bool reflected = false; // Track if a bounce occurred
-
-        for (int i = 0; i < dotsNumber; i++)
+        if (Lootcase)
         {
-            cumulativeTime += dotSpacing; // Increase time incrementally
-
-            // Predict next position using physics formula
-            Vector2 nextPosition = currentPosition + (currentVelocity * cumulativeTime) + (0.5f * Physics2D.gravity * cumulativeTime * cumulativeTime);
-
-            Vector2 direction = (nextPosition - currentPosition).normalized;
-            float distance = Vector2.Distance(currentPosition, nextPosition);
-
-            // Raycast to detect obstacles along the trajectory
-            RaycastHit2D hit = Physics2D.Raycast(currentPosition, direction, distance, obstacleLayer);
-
-            // Draw ray for debugging
-            Debug.DrawRay(currentPosition, direction * (distance), Color.red, 0.1f);
-
-            if (hit.collider != null && !reflected) // Handle reflection only once
+            timeStamp = dotSpacing;
+            for (int i = 0; i < 20; i++)
             {
-                // Place dot at collision point
-                dotsList[i].position = hit.point;
+                pos.x = (ballPos.x + forceApplied.x * timeStamp);
+                pos.y = (ballPos.y + forceApplied.y * timeStamp) - (Physics2D.gravity.magnitude * timeStamp * timeStamp) / 2f;
 
-                // Reflect velocity based on surface normal
-                currentVelocity = Vector2.Reflect(currentVelocity, hit.normal) * 0.8f; // Apply damping after reflection
-
-                // Restart trajectory from reflection point
-                currentPosition = hit.point;
-                reflected = true;
-
-                // Adjust time handling: Continue cumulative time instead of resetting
-                cumulativeTime = dotSpacing;
+                dotsList[i].position = pos;
+                timeStamp += dotSpacing;
             }
-            else
+        }
+        else
+        {
+            Vector2 currentVelocity = forceApplied * forceScale;
+            Vector2 currentPosition = ballPos;
+            float cumulativeTime = 0;
+
+            bool reflected = false; // Track if a bounce occurred
+
+            for (int i = 0; i < dotsNumber; i++)
             {
-                // No collision, update normally
-                dotsList[i].position = nextPosition;
-                currentPosition = nextPosition;
+                cumulativeTime += dotSpacing; // Increase time incrementally
+
+                // Predict next position using physics formula
+                Vector2 nextPosition = currentPosition + (currentVelocity * cumulativeTime) + (0.5f * Physics2D.gravity * cumulativeTime * cumulativeTime);
+
+                Vector2 direction = (nextPosition - currentPosition).normalized;
+                float distance = Vector2.Distance(currentPosition, nextPosition);
+
+                // Raycast to detect obstacles along the trajectory
+                RaycastHit2D hit = Physics2D.Raycast(currentPosition, direction, distance, obstacleLayer);
+
+                // Draw ray for debugging
+                Debug.DrawRay(currentPosition, direction * (distance), Color.red, 0.1f);
+
+                if (hit.collider != null && !reflected) // Handle reflection only once
+                {
+                    // Place dot at collision point
+                    dotsList[i].position = hit.point;
+
+                    // Reflect velocity based on surface normal
+                    currentVelocity = Vector2.Reflect(currentVelocity, hit.normal) * 0.8f; // Apply damping after reflection
+
+                    // Restart trajectory from reflection point
+                    currentPosition = hit.point;
+                    reflected = true;
+
+                    // Adjust time handling: Continue cumulative time instead of resetting
+                    cumulativeTime = dotSpacing;
+                }
+                else
+                {
+                    // No collision, update normally
+                    dotsList[i].position = nextPosition;
+                    currentPosition = nextPosition;
+                }
             }
         }
     }

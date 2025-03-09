@@ -21,10 +21,13 @@ public class GameManager : MonoBehaviour
     public Ball ball;
     public Trajectory trajectory;
     [SerializeField] float pushForce = 4f;
+    [SerializeField] float lootBallPushForce = 10f;
+
     [SerializeField] float maxDragDistance = 2.5f; // Set your preferred limit
 
     private Coroutine resetBallCoroutine;
     [SerializeField] private float resetPositionDelay = 5f;
+    [SerializeField] private float lootResetPositionDelay = 2.5f;
 
     public GameObject successPanel;
     public GameObject[] successStars;
@@ -60,6 +63,7 @@ public class GameManager : MonoBehaviour
     private int maxLootballs = 3;
 
     private Vector3 startPosition;
+    private float localPushForce;
 
     void Awake()
     {
@@ -72,6 +76,8 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         startPosition = transform.position;
+        localPushForce = pushForce;
+
         LootBallsCountL.gameObject.SetActive(false);
         LootBallsCountR.gameObject.SetActive(false);
 
@@ -133,7 +139,14 @@ public class GameManager : MonoBehaviour
         direction = (startPoint - endPoint).normalized;
         force = direction * distance * pushForce;
 
-        trajectory.UpdateDots(ball.pos, force);
+        if (ballIdentity == BallIdentity.Bouncyball)
+        {
+            trajectory.UpdateDots(ball.pos, force, false);
+        }
+        else if (ballIdentity == BallIdentity.Lootball)
+        {
+            trajectory.UpdateDots(ball.pos, force, true);
+        }
     }
 
     void OnDragEnd()
@@ -186,7 +199,14 @@ public class GameManager : MonoBehaviour
 
     IEnumerator AutoSetDragPosition()
     {
-        yield return new WaitForSeconds(resetPositionDelay);
+        if (ballIdentity == BallIdentity.Bouncyball)
+        {
+            yield return new WaitForSeconds(resetPositionDelay);
+        }
+        else if (ballIdentity == BallIdentity.Lootball)
+        {
+            yield return new WaitForSeconds(lootResetPositionDelay);
+        }
 
         if (ballIdentity == BallIdentity.Bouncyball)
         {
@@ -204,6 +224,7 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(resetPositionDelay);
 
         ball.transform.localScale *= 2.0f;
+        pushForce = localPushForce;
     }
 
     public void ResetBall()
@@ -338,6 +359,7 @@ public class GameManager : MonoBehaviour
 
         // scale the ball size to half the current size
         ball.transform.localScale *= 0.5f;
+        pushForce = lootBallPushForce;
 
         ballIdentity = BallIdentity.Lootball;
         SlingshotBase.gameObject.SetActive(false);
