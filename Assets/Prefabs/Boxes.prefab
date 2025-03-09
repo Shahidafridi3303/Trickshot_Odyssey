@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7423618936188111125}
   - component: {fileID: 8534072390234840424}
   - component: {fileID: 756709928770703551}
+  - component: {fileID: 6740008691461171352}
   m_Layer: 6
   m_Name: Boxes
   m_TagString: Box
@@ -28,7 +29,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8905724908087179673}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 4.542848, y: -1.0746483, z: 23.016586}
   m_LocalScale: {x: 1.0649, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -180,3 +181,16 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &6740008691461171352
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8905724908087179673}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 230c543085bb5ba438fb623c3cf5ac43, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  freezeColor: {r: 0.18752226, g: 0.9245283, b: 0.9245283, a: 1}

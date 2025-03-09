@@ -65,6 +65,8 @@ public class GameManager : MonoBehaviour
     private Vector3 startPosition;
     private float localPushForce;
 
+    private bool gameEnded;
+
     void Awake()
     {
         if (Instance == null)
@@ -118,6 +120,8 @@ public class GameManager : MonoBehaviour
 
     void OnDragStart()
     {
+        if (gameEnded) { return; }
+
         ball.DeactivateRb();
         ball.transform.position = Slingshot.Instance.idlePosition.position;
         ball.transform.rotation = Quaternion.identity;
@@ -130,6 +134,8 @@ public class GameManager : MonoBehaviour
 
     void OnDrag()
     {
+        if (gameEnded) { return; }
+
         endPoint = cam.ScreenToWorldPoint(Input.mousePosition);
         distance = Vector2.Distance(startPoint, endPoint);
 
@@ -151,10 +157,17 @@ public class GameManager : MonoBehaviour
 
     void OnDragEnd()
     {
+        if (gameEnded) { return; }
+
         if (ballIdentity == BallIdentity.Bouncyball)
         {
             currentBalls--;
             UpdateBallCount();
+
+            if (currentBalls == 0)
+            {
+                gameEnded = true;
+            }
         }
         else if(ballIdentity == BallIdentity.Lootball)
         {
@@ -290,13 +303,13 @@ public class GameManager : MonoBehaviour
     {
         // Calculate starCount based on the percentage of balls used
         float percentageUsed = 1.0f - ((float)currentBalls / maxBalls);
-        int starCount = Mathf.CeilToInt(percentageUsed * 3);
+        int starCount = Mathf.CeilToInt(percentageUsed * 5);
 
         // Invert the star count logic
-        starCount = 4 - starCount;
+        starCount = 6 - starCount;
 
         // Ensure starCount is between 1 and 3
-        starCount = Mathf.Clamp(starCount, 1, 3);
+        starCount = Mathf.Clamp(starCount, 1, 5);
 
         for (int i = 0; i < successStars.Length; i++)
         {
@@ -372,4 +385,10 @@ public class GameManager : MonoBehaviour
         LootBallsCountL.text = "x" + currentLootBalls;
         LootBallsCountR.text = currentLootBalls + "x";
     }
+
+    public void SetBallTypeFromUI(int type)
+    {
+        ball.SetBallType((BallType)type);
+    }
+
 }

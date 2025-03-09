@@ -26,7 +26,7 @@ public class Laser : MonoBehaviour
 
         if (_hit.collider != null && _hit.collider.CompareTag("Ball"))
         {
-            Ball.Instance.CameraShake_ResetBall();
+            Ball.Instance.BallCameraShake();
             GameManager.Instance.ResetBall();
         }
 

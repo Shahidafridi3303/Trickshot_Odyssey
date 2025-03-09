@@ -2,16 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum BallType
+{
+    Normal,
+    Explode,
+    Freeze
+}
+
 public class Ball : MonoBehaviour
 {
     public GameObject explosionEffect;
 
     private Rigidbody2D rb;
     private CircleCollider2D col;
+    public BallType ballType = BallType.Normal;
 
     [HideInInspector] public int collisionCount = 0;
-
     [HideInInspector] public Vector3 pos { get { return transform.position; } }
+
+    // ExplodeType property
+    public float ExplodefieldOfImpact;
+    public float FrozefieldOfImpact;
+
+    public float force;
 
     public static Ball Instance;
 
@@ -77,7 +90,68 @@ public class Ball : MonoBehaviour
             }
         }
 
+        switch (ballType)
+        {
+            case BallType.Explode:
+                ExplodeEffect();
+                break;
+
+            case BallType.Freeze:
+                FreezeEffect();
+                break;
+        }
+
+        ballType = BallType.Normal;
+
         StartCoroutine(IncrementCollisionCount());
+    }
+
+    private void FreezeEffect()
+    {
+        Collider2D[] hitBoxes = Physics2D.OverlapCircleAll(transform.position, FrozefieldOfImpact);
+
+        foreach (Collider2D col in hitBoxes)
+        {
+            if (col.CompareTag("Box"))
+            {
+                Box boxScript = col.GetComponent<Box>();
+                if (boxScript != null)
+                {
+                    boxScript.ApplyFreezeEffect();
+                }
+            }
+        }
+    }
+
+    private void ExplodeEffect()
+    {
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, ExplodefieldOfImpact); 
+        foreach (Collider2D nearbyObject in colliders)
+        {
+            Rigidbody2D rb = nearbyObject.GetComponent<Rigidbody2D>();
+            if (rb != null)
+            {
+                Vector2 forceDir = rb.transform.position - transform.position;
+                rb.AddForce(forceDir.normalized * force); 
+            }
+        }
+
+        BallCameraShake();
+        GameManager.Instance.ResetBall();
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, ExplodefieldOfImpact);
+
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, FrozefieldOfImpact);
+    }
+
+    public void SetBallType(BallType type)
+    {
+        ballType = type;
     }
 
     private IEnumerator IncrementCollisionCount()
@@ -86,7 +160,7 @@ public class Ball : MonoBehaviour
         collisionCount++;
     }
 
-    public void CameraShake_ResetBall()
+    public void BallCameraShake()
     {
         CameraShake.Instance.Shake();
         GameObject explosionEffectIns = Instantiate(explosionEffect, transform.position, Quaternion.identity);

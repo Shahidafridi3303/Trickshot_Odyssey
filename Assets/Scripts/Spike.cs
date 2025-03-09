@@ -18,7 +18,7 @@ public class Spike : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Ball"))
         {
-            Ball.Instance.CameraShake_ResetBall();
+            Ball.Instance.BallCameraShake();
             GameManager.Instance.ResetBall();
             Destroy(gameObject);
         }
