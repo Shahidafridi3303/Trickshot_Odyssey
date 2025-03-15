@@ -73,6 +73,8 @@ public class GameManager : MonoBehaviour
     private float localPushForce;
 
     private bool gameEnded;
+    private bool canEnablePower = true;
+    private bool isCancelledDrag = false;
 
     void Awake()
     {
@@ -103,10 +105,17 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        //if (Input.GetKeyDown(KeyCode.Space))
-        //{
-            
-        //}
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (!isDragging) return;
+
+            isCancelledDrag = true;
+
+            isDragging = false;
+            trajectory.Hide();
+            ResetBall();
+            Slingshot.Instance.OnMouseUpEvent(); 
+        }
 
         if (isDragging)
         {
@@ -166,6 +175,14 @@ public class GameManager : MonoBehaviour
     void OnDragEnd()
     {
         if (gameEnded) { return; }
+
+        if (isCancelledDrag == true)
+        {
+            isCancelledDrag = false;
+            return;
+        }
+
+        canEnablePower = false;
 
         if (ballIdentity == BallIdentity.Bouncyball)
         {
@@ -253,6 +270,8 @@ public class GameManager : MonoBehaviour
 
     public void ResetBall()
     {
+        canEnablePower = true;
+
         // Move ball to drag start position and reset velocity
         ball.DeactivateRb();
         ball.transform.position = Slingshot.Instance.idlePosition.position;
@@ -410,6 +429,8 @@ public class GameManager : MonoBehaviour
 
     public void SetBallTypeFromUI(int type)
     {
+        if (canEnablePower == false) return;
+
         if (type == 1)
         {
             if (coins > bombBallCost)
