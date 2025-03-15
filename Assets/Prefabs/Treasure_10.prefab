@@ -143,5 +143,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 448bc6988a990a346a8e221a005d6259, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minAmount: 0
-  maxAmount: 0
+  minAmount: 7
+  maxAmount: 19

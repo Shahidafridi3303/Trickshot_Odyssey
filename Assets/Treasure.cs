@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Treasure : MonoBehaviour
 {
-    public int minAmount, maxAmount;
+    public int minAmount = 7, maxAmount = 19;
     private int amount;
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -24,7 +24,7 @@ public class Treasure : MonoBehaviour
 
     public void UpdateGameManager()
     {
-        amount = Random.Range(7, 19);
+        amount = Random.Range(minAmount, maxAmount);
 
         GameManager.Instance.IncrementCoinCount(amount);
         Destroy(gameObject);
