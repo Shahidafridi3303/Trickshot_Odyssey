@@ -8,6 +8,9 @@ public class CameraShake : MonoBehaviour
     public float shakeDuration = 0.5f;
     public float shakeMagnitude = 0.1f;
 
+    public float shakeDuration_small = 0.25f;
+    public float shakeMagnitude_small = 0.05f;
+
     private bool right = true;
 
     private void Awake()
@@ -27,9 +30,16 @@ public class CameraShake : MonoBehaviour
         originalPosition = transform.position;
     }
 
-    public void Shake()
+    public void Shake(bool small = false)
     {
-        StartCoroutine(ShakeCoroutine(shakeDuration, shakeMagnitude));
+        if (!small)
+        {
+            StartCoroutine(ShakeCoroutine(shakeDuration, shakeMagnitude));
+        }
+        else
+        {
+            StartCoroutine(ShakeCoroutine(shakeDuration_small, shakeMagnitude_small));
+        }
 
         if (Balloon.Instance.AlreadyTravelling())
         {

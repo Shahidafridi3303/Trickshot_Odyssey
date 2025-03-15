@@ -166,4 +166,11 @@ public class Ball : MonoBehaviour
         GameObject explosionEffectIns = Instantiate(explosionEffect, transform.position, Quaternion.identity);
         explosionEffectIns.transform.localScale = new Vector3(0.4f, 0.4f, 0.4f);
     }
+
+    public void BallCameraShake_Small()
+    {
+        CameraShake.Instance.Shake(true);
+        GameObject explosionEffectIns = Instantiate(explosionEffect, transform.position, Quaternion.identity);
+        explosionEffectIns.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+    }
 }
