@@ -75,6 +75,7 @@ public class GameManager : MonoBehaviour
     private bool gameEnded;
     private bool canEnablePower = true;
     private bool isCancelledDrag = false;
+    private bool wasLastLootball = false;
 
     void Awake()
     {
@@ -201,6 +202,8 @@ public class GameManager : MonoBehaviour
 
             if (currentLootBalls == 0)
             {
+                wasLastLootball = true;
+
                 ballIdentity = BallIdentity.Bouncyball;
                 currentLootBalls = maxLootballs;
                 UpdateLootBallCount();
@@ -263,6 +266,15 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(resetPositionDelay);
 
+        if (wasLastLootball)
+        {
+            wasLastLootball = false;
+            ResetScale();
+        }
+    }
+
+    public void ResetScale()
+    {
         ball.transform.localScale *= 2.0f;
         pushForce = localPushForce;
         gameEnded = false;
@@ -270,6 +282,12 @@ public class GameManager : MonoBehaviour
 
     public void ResetBall()
     {
+        if (wasLastLootball)
+        {
+            wasLastLootball = false;
+            ResetScale();
+        }
+
         canEnablePower = true;
 
         // Move ball to drag start position and reset velocity
