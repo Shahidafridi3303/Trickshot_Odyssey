@@ -12,6 +12,7 @@ TagManager:
   - Chains
   - Balloon
   - Reflector
+  - Treasure
   layers:
   - Default
   - TransparentFX

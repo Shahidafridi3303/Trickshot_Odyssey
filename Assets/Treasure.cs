@@ -4,18 +4,29 @@ using UnityEngine;
 
 public class Treasure : MonoBehaviour
 {
-    void Start()
+    public int minAmount, maxAmount;
+    private int amount;
+
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        
+        if (other.gameObject.CompareTag("Ball"))
+        {
+            Ball.Instance.BallCameraShake_Small(true, transform.position);
+            UpdateGameManager();
+        }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    public void Activate()
     {
-        if (collision.gameObject.CompareTag("Ball"))
-        {
-            Ball.Instance.BallCameraShake_Small();
+        Ball.Instance.BallCameraShake_Small(false, transform.position);
+        UpdateGameManager();
+    }
 
-            Destroy(gameObject);
-        }
+    public void UpdateGameManager()
+    {
+        amount = Random.Range(7, 19);
+
+        GameManager.Instance.IncrementCoinCount(amount);
+        Destroy(gameObject);
     }
 }

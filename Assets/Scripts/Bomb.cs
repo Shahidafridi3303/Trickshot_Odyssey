@@ -10,7 +10,8 @@ public enum BombState
 
 public class Bomb : MonoBehaviour
 {
-    public float fieldOfImpact;
+    public float fieldOfImpact = 3.22f;
+    public float treasureFieldOfImpact = 1.88f;
     public float force;
     public LayerMask LayerToHit;
 
@@ -70,13 +71,31 @@ public class Bomb : MonoBehaviour
         if (alreadyActivated) return;
 
         alreadyActivated = true;
-        Collider2D[] objects = Physics2D.OverlapCircleAll(transform.position, fieldOfImpact, LayerToHit);
 
+        // Apply force to objects in fieldOfImpact
+        Collider2D[] objects = Physics2D.OverlapCircleAll(transform.position, fieldOfImpact, LayerToHit);
         foreach (Collider2D obj in objects)
         {
             Vector2 direction = obj.transform.position - transform.position;
+            Rigidbody2D rb = obj.GetComponent<Rigidbody2D>();
+            if (rb != null)
+            {
+                rb.AddForce(direction * force);
+            }
+        }
 
-            obj.GetComponent<Rigidbody2D>().AddForce(direction * force);
+        // Detect and activate nearby treasures
+        Collider2D[] treasures = Physics2D.OverlapCircleAll(transform.position, treasureFieldOfImpact);
+        foreach (Collider2D treasure in treasures)
+        {
+            if (treasure.CompareTag("Treasure"))
+            {
+                Treasure treasureScript = treasure.GetComponent<Treasure>();
+                if (treasureScript != null)
+                {
+                    treasureScript.Activate();
+                }
+            }
         }
 
         bomb.gameObject.SetActive(false);
@@ -90,6 +109,9 @@ public class Bomb : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, fieldOfImpact);
+
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, treasureFieldOfImpact);
     }
 
     public void Trigger()

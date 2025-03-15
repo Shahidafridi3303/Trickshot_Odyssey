@@ -12,6 +12,7 @@ public enum BallType
 public class Ball : MonoBehaviour
 {
     public GameObject explosionEffect;
+    public GameObject smallExplosionEffect;
 
     private Rigidbody2D rb;
     private CircleCollider2D col;
@@ -167,10 +168,19 @@ public class Ball : MonoBehaviour
         explosionEffectIns.transform.localScale = new Vector3(0.4f, 0.4f, 0.4f);
     }
 
-    public void BallCameraShake_Small()
+    public void BallCameraShake_Small(bool Shake, Vector3 location)
     {
-        CameraShake.Instance.Shake(true);
-        GameObject explosionEffectIns = Instantiate(explosionEffect, transform.position, Quaternion.identity);
-        explosionEffectIns.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+        if (!Shake)
+        {
+            CameraShake.Instance.Shake(true);
+
+            GameObject smallExplosionEffectIns = Instantiate(smallExplosionEffect, location, Quaternion.identity);
+            smallExplosionEffectIns.transform.localScale = new Vector3(0.15f, 0.15f, 0.15f);
+        }
+        else
+        {
+            GameObject explosionEffectIns = Instantiate(explosionEffect, transform.position, Quaternion.identity);
+            explosionEffectIns.transform.localScale = new Vector3(0.15f, 0.15f, 0.15f);
+        }
     }
 }

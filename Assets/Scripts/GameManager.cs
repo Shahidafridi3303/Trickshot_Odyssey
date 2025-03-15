@@ -56,11 +56,18 @@ public class GameManager : MonoBehaviour
 
     private bool successPanelOpened;
 
+    // Loot ui
     [SerializeField] private TextMeshProUGUI LootBallsCountL;
     [SerializeField] private TextMeshProUGUI LootBallsCountR;
     public GameObject SlingshotBase;
     public int currentLootBalls;
     private int maxLootballs = 3;
+
+    // Coin
+    private int coins = 10;
+    [SerializeField] private TextMeshProUGUI coins_text;
+    public int bombBallCost = 50;
+    public int freezingBallCost = 70;
 
     private Vector3 startPosition;
     private float localPushForce;
@@ -91,6 +98,7 @@ public class GameManager : MonoBehaviour
         ball.DeactivateRb();
 
         UpdateBallCount();
+        UpdateCoinUi();
     }
 
     void Update()
@@ -190,6 +198,8 @@ public class GameManager : MonoBehaviour
 
                 transform.position = startPosition;
                 Slingshot.Instance.UpdateStripPosition();
+
+                gameEnded = true;
             }
         }
 
@@ -238,6 +248,7 @@ public class GameManager : MonoBehaviour
 
         ball.transform.localScale *= 2.0f;
         pushForce = localPushForce;
+        gameEnded = false;
     }
 
     public void ResetBall()
@@ -357,6 +368,17 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void IncrementCoinCount(int amount)
+    {
+        coins = coins + amount;
+        UpdateCoinUi();
+    }
+
+    private void UpdateCoinUi()
+    {
+        coins_text.text = "Coins: " + coins;
+    }
+
     public void ActivateLootballs(bool Left)
     {
         if (Left)
@@ -388,7 +410,25 @@ public class GameManager : MonoBehaviour
 
     public void SetBallTypeFromUI(int type)
     {
-        ball.SetBallType((BallType)type);
+        if (type == 1)
+        {
+            if (coins > bombBallCost)
+            {
+                ball.SetBallType((BallType)type);
+                coins = coins - bombBallCost;
+                UpdateCoinUi();
+            }
+        }
+
+        if (type == 2)
+        {
+            if (coins > freezingBallCost)
+            {
+                ball.SetBallType((BallType)type);
+                coins = coins - freezingBallCost;
+                UpdateCoinUi();
+            }
+        }
     }
 
 }
