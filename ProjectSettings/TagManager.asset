@@ -23,7 +23,7 @@ TagManager:
   - BoxLayer
   - obstacleLayer
   - PostProcessLayer
-  - 
+  - FrozenLayer
   - 
   - 
   - 

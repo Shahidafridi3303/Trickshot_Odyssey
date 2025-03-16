@@ -27,15 +27,20 @@ public class MovingPlatform : MonoBehaviour
     private Vector3 startPos;
     private int direction; // 1 = forward, -1 = backward
 
+    [HideInInspector] public bool canPerform = true;
+
     void Start()
     {
         startPos = transform.position;
         direction = (initialMovement == InitialMovement.Forward) ? 1 : -1;
     }
 
-    void Update()
+    void FixedUpdate()
     {
-        MovePlatform();
+        if (canPerform)
+        {
+            MovePlatform();
+        }
     }
 
     void MovePlatform()

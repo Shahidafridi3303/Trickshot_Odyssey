@@ -64,7 +64,7 @@ public class GameManager : MonoBehaviour
     private int maxLootballs = 3;
 
     // Coin
-    private int coins = 10;
+    public int coins = 10;
     [SerializeField] private TextMeshProUGUI coins_text;
     public int bombBallCost = 50;
     public int freezingBallCost = 70;

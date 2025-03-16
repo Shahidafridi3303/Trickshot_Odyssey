@@ -4,8 +4,16 @@ using UnityEngine;
 
 public class PlatformColorChanger : MonoBehaviour
 {
-    public float changeInterval = 2f; 
     private List<SpriteRenderer> platformRenderers = new List<SpriteRenderer>();
+    public static PlatformColorChanger Instance;
+
+    void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+    }
 
     void Start()
     {
@@ -15,22 +23,17 @@ public class PlatformColorChanger : MonoBehaviour
         {
             platformRenderers.Add(renderer);
         }
-
-        StartCoroutine(ChangePlatformColors());
     }
 
-    IEnumerator ChangePlatformColors()
+    public void  ChangePlatformColors()
     {
-        while (true)
+        Debug.Log("Chanign clolor");
+
+        Color newColor = GetRandomColor();
+
+        foreach (SpriteRenderer renderer in platformRenderers)
         {
-            yield return new WaitForSeconds(changeInterval);
-
-            Color newColor = GetRandomColor();
-
-            foreach (SpriteRenderer renderer in platformRenderers)
-            {
-                renderer.color = newColor;
-            }
+            renderer.color = newColor;
         }
     }
 

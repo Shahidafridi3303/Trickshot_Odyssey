@@ -32,6 +32,8 @@ public class CameraShake : MonoBehaviour
 
     public void Shake(bool small = false)
     {
+        PlatformColorChanger.Instance.ChangePlatformColors();
+
         if (!small)
         {
             StartCoroutine(ShakeCoroutine(shakeDuration, shakeMagnitude));

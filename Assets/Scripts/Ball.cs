@@ -29,6 +29,9 @@ public class Ball : MonoBehaviour
 
     public static Ball Instance;
 
+    public WindBlower windBlower;
+    public WindBlower windBlower2;
+
     void Awake()
     {
         if (Instance == null)
@@ -115,6 +118,8 @@ public class Ball : MonoBehaviour
         {
             if (col.CompareTag("Box"))
             {
+                col.gameObject.layer = LayerMask.NameToLayer("FrozenLayer");
+
                 Box boxScript = col.GetComponent<Box>();
                 if (boxScript != null)
                 {
@@ -122,6 +127,9 @@ public class Ball : MonoBehaviour
                 }
             }
         }
+
+        windBlower.ActivateWind();
+        windBlower2.ActivateWind();
     }
 
     private void ExplodeEffect()
