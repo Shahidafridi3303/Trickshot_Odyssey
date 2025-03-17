@@ -49,14 +49,21 @@ public class Laser : MonoBehaviour
             StartCoroutine(ReactivateLaserAfterDelay());
         }
 
-        laserDeactivatorButton.UpdateLeverState(false);
+        if (laserDeactivatorButton)
+        {
+            laserDeactivatorButton.UpdateLeverState(false);
+        }
     }
 
     public void ActivateLaser()
     {
         isActive = true;
         m_lineRenderer.enabled = true;
-        laserDeactivatorButton.UpdateLeverState(true);
+
+        if (laserDeactivatorButton)
+        {
+            laserDeactivatorButton.UpdateLeverState(true);
+        }
     }
 
     IEnumerator ReactivateLaserAfterDelay()

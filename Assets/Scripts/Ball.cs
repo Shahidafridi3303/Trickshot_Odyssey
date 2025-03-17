@@ -5,8 +5,9 @@ using UnityEngine;
 public enum BallType
 {
     Normal,
-    Explode,
-    Freeze
+    Bomb,
+    Freeze,
+    Explosion
 }
 
 public class Ball : MonoBehaviour
@@ -22,8 +23,9 @@ public class Ball : MonoBehaviour
     [HideInInspector] public Vector3 pos { get { return transform.position; } }
 
     // ExplodeType property
-    public float ExplodefieldOfImpact;
+    public float BombfieldOfImpact;
     public float FrozefieldOfImpact;
+    public float ExplosionfieldOfImpact;
 
     public float force;
 
@@ -96,18 +98,51 @@ public class Ball : MonoBehaviour
 
         switch (ballType)
         {
-            case BallType.Explode:
+            case BallType.Bomb:
                 ExplodeEffect();
+                ballType = BallType.Normal;
                 break;
 
             case BallType.Freeze:
                 FreezeEffect();
+                ballType = BallType.Normal;
+                break;
+
+            case BallType.Explosion:
+                ExplosionEffect();
+                Invoke("DefaultBallType", 2.0f);
                 break;
         }
 
-        ballType = BallType.Normal;
-
         StartCoroutine(IncrementCollisionCount());
+    }
+
+    private void DefaultBallType()
+    {
+        ballType = BallType.Normal;
+    }
+
+    private void ExplosionEffect()
+    {
+        Collider2D[] hitBoxes = Physics2D.OverlapCircleAll(transform.position, ExplosionfieldOfImpact);
+
+        foreach (Collider2D col in hitBoxes)
+        {
+            if (col.CompareTag("Platform"))
+            {
+                Destroy(col.gameObject);
+            }
+
+            if (col.CompareTag("Button"))
+            {
+                col.GetComponent<Button>().DestroySelf_Laser();
+            }
+
+            if (col.CompareTag("Treasure"))
+            {
+                col.GetComponent<Treasure>().ActivateRb();
+            }
+        }
     }
 
     private void FreezeEffect()
@@ -134,7 +169,7 @@ public class Ball : MonoBehaviour
 
     private void ExplodeEffect()
     {
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, ExplodefieldOfImpact); 
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, BombfieldOfImpact); 
         foreach (Collider2D nearbyObject in colliders)
         {
             Rigidbody2D rb = nearbyObject.GetComponent<Rigidbody2D>();
@@ -152,10 +187,13 @@ public class Ball : MonoBehaviour
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, ExplodefieldOfImpact);
+        Gizmos.DrawWireSphere(transform.position, BombfieldOfImpact);
 
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, FrozefieldOfImpact);
+
+        Gizmos.color = Color.white;
+        Gizmos.DrawWireSphere(transform.position, ExplosionfieldOfImpact);
     }
 
     public void SetBallType(BallType type)

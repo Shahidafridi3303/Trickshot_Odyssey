@@ -50,7 +50,7 @@ public class Bomb : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.CompareTag("Box") || other.gameObject.CompareTag("Platform") || other.gameObject.CompareTag("Ground"))
+        if (other.gameObject.CompareTag("Box") || other.gameObject.CompareTag("Wall") || other.gameObject.CompareTag("Ground"))
         {
             if (bombState == BombState.Hanging)
             {

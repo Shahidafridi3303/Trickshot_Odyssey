@@ -68,6 +68,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI coins_text;
     public int bombBallCost = 50;
     public int freezingBallCost = 70;
+    public int explosionBallCost = 60;
 
     private Vector3 startPosition;
     private float localPushForce;
@@ -108,20 +109,25 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (!isDragging) return;
-
-            isCancelledDrag = true;
-
-            isDragging = false;
-            trajectory.Hide();
-            ResetBall();
-            Slingshot.Instance.OnMouseUpEvent(); 
+             CancelDrag();
         }
 
         if (isDragging)
         {
             OnDrag();
         }
+    }
+
+    private void CancelDrag()
+    {
+        if (!isDragging) return;
+
+        isCancelledDrag = true;
+
+        isDragging = false;
+        trajectory.Hide();
+        ResetBall();
+        Slingshot.Instance.OnMouseUpEvent();
     }
 
     private void OnMouseDown()
@@ -447,6 +453,8 @@ public class GameManager : MonoBehaviour
 
     public void SetBallTypeFromUI(int type)
     {
+        CancelDrag();
+
         if (canEnablePower == false) return;
 
         if (type == 1)
@@ -468,6 +476,15 @@ public class GameManager : MonoBehaviour
                 UpdateCoinUi();
             }
         }
-    }
 
+        if (type == 3)
+        {
+            if (coins > explosionBallCost)
+            {
+                ball.SetBallType((BallType)type);
+                coins = coins - explosionBallCost;
+                UpdateCoinUi();
+            }
+        }
+    }
 }

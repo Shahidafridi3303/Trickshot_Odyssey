@@ -53,4 +53,10 @@ public class Button : MonoBehaviour
     {
         leverSpriteRenderer.sprite = leverUpSprite;
     }
+
+    public void DestroySelf_Laser()
+    {
+        Destroy(laser.gameObject);
+        Destroy(gameObject);
+    }
 }

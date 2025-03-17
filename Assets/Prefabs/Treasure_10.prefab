@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3986778391297121727}
   - component: {fileID: 5932521964795375571}
   - component: {fileID: 4544718394021332427}
+  - component: {fileID: 4690523035328137844}
   m_Layer: 0
   m_Name: Treasure_10
   m_TagString: Treasure
@@ -145,3 +146,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minAmount: 7
   maxAmount: 19
+--- !u!50 &4690523035328137844
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8215522083223864989}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0

@@ -15,25 +15,32 @@ public class PlatformColorChanger : MonoBehaviour
         }
     }
 
-    void Start()
+    public void ChangePlatformColors()
     {
+        Invoke("ApplyColor", 0.2f);
+    }
+
+    private void ApplyColor()
+    {
+        platformRenderers.Clear();
         SpriteRenderer[] renderers = GetComponentsInChildren<SpriteRenderer>();
 
         foreach (SpriteRenderer renderer in renderers)
         {
-            platformRenderers.Add(renderer);
+            if (renderer != null)
+            {
+                platformRenderers.Add(renderer);
+            }
         }
-    }
-
-    public void  ChangePlatformColors()
-    {
-        Debug.Log("Chanign clolor");
 
         Color newColor = GetRandomColor();
 
         foreach (SpriteRenderer renderer in platformRenderers)
         {
-            renderer.color = newColor;
+            if (renderer != null)
+            {
+                renderer.color = newColor;
+            }
         }
     }
 

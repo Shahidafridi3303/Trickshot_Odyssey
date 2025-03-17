@@ -13,6 +13,8 @@ TagManager:
   - Balloon
   - Reflector
   - Treasure
+  - Wall
+  - Button
   layers:
   - Default
   - TransparentFX
