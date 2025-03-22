@@ -3,7 +3,6 @@ using Unity.VisualScripting;
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using Microsoft.Unity.VisualStudio.Editor;
 
 public enum BallIdentity
 {
@@ -356,6 +355,8 @@ public class GameManager : MonoBehaviour
         CalculateStars();
 
         DestroyBalloons();
+
+        gameEnded = true;
     }
 
     public void DestroyBalloons()
@@ -401,6 +402,8 @@ public class GameManager : MonoBehaviour
         if (successPanelOpened) return;
         Timer.Instance.StopTimer();
         failurePanel.SetActive(true);
+
+        gameEnded = true;
     }
 
     public void UpdateBallCount()
