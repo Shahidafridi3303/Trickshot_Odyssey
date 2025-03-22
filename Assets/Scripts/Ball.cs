@@ -7,7 +7,8 @@ public enum BallType
     Normal,
     Bomb,
     Freeze,
-    Explosion
+    Explosion,
+    BoxDestoyer
 }
 
 public class Ball : MonoBehaviour
@@ -112,9 +113,22 @@ public class Ball : MonoBehaviour
                 ExplosionEffect();
                 Invoke("DefaultBallType", 2.0f);
                 break;
+
+            case BallType.BoxDestoyer:
+                BoxDestoyerEffect(other);
+                Invoke("DefaultBallType", GameManager.Instance.resetPositionDelay);
+                break;
         }
 
         StartCoroutine(IncrementCollisionCount());
+    }
+
+    private void BoxDestoyerEffect(Collision2D other)
+    {
+        if (other.gameObject.CompareTag("Box"))
+        {
+            GameManager.Instance.UpdateFallenBoxesInstant(other.gameObject);
+        }
     }
 
     private void DefaultBallType()

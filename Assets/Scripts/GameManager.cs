@@ -26,7 +26,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] float maxDragDistance = 2.5f; // Set your preferred limit
 
     private Coroutine resetBallCoroutine;
-    [SerializeField] private float resetPositionDelay = 5f;
+    public float resetPositionDelay = 5f;
     [SerializeField] private float lootResetPositionDelay = 2.5f;
 
     public GameObject successPanel;
@@ -69,6 +69,7 @@ public class GameManager : MonoBehaviour
     public int bombBallCost = 50;
     public int freezingBallCost = 70;
     public int explosionBallCost = 60;
+    public int BoxDestoyerBallCost = 70;
 
     private Vector3 startPosition;
     private float localPushForce;
@@ -317,6 +318,23 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void UpdateFallenBoxesInstant(GameObject box)
+    {
+        if (!countedBoxes.Contains(box))
+        {
+            countedBoxes.Add(box);
+            fallenBoxes++;
+            fallenBoxesText.text = "Boxes Fallen: " + fallenBoxes + "/" + targetBoxes;
+
+            Destroy(box);
+
+            if (fallenBoxes >= targetBoxes)
+            {
+                OpenSuccessPanel();
+            }
+        }
+    }
+
     private IEnumerator DestroyBoxAfterDelay(GameObject box)
     {
         yield return new WaitForSeconds(updateDelay);
@@ -483,6 +501,16 @@ public class GameManager : MonoBehaviour
             {
                 ball.SetBallType((BallType)type);
                 coins = coins - explosionBallCost;
+                UpdateCoinUi();
+            }
+        }
+
+        if (type == 4)
+        {
+            if (coins > BoxDestoyerBallCost)
+            {
+                ball.SetBallType((BallType)type);
+                coins = coins - BoxDestoyerBallCost;
                 UpdateCoinUi();
             }
         }
