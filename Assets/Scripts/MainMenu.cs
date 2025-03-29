@@ -29,9 +29,9 @@ public class MainMenu : MonoBehaviour
         SceneManager.LoadScene(LoadScene);
     }
 
-    public void NewGame()
+    public void NewGame(int level)
     {
-        StartCoroutine(WaitAndLoadScene(1));
+        StartCoroutine(WaitAndLoadScene(level));
     }
 
     public void PauseGame()
