@@ -375,9 +375,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8982992037107121104, guid: 3019d2926da33b14ab4a2a7350660e24, type: 3}
       propertyPath: m_text
-      value: 'Hard
-
-'
+      value: Level-3
       objectReference: {fileID: 0}
     - target: {fileID: 8982992037107121104, guid: 3019d2926da33b14ab4a2a7350660e24, type: 3}
       propertyPath: m_fontColor.b
@@ -881,7 +879,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8982992037107121104, guid: 3019d2926da33b14ab4a2a7350660e24, type: 3}
       propertyPath: m_text
-      value: Normal
+      value: Level-2
       objectReference: {fileID: 0}
     - target: {fileID: 8982992037107121104, guid: 3019d2926da33b14ab4a2a7350660e24, type: 3}
       propertyPath: m_fontColor.b
@@ -1617,7 +1615,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8982992037107121104, guid: 3019d2926da33b14ab4a2a7350660e24, type: 3}
       propertyPath: m_text
-      value: Easy
+      value: Level-1
       objectReference: {fileID: 0}
     - target: {fileID: 8982992037107121104, guid: 3019d2926da33b14ab4a2a7350660e24, type: 3}
       propertyPath: m_fontColor.b

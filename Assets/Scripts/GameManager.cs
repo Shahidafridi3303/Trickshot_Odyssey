@@ -406,6 +406,11 @@ public class GameManager : MonoBehaviour
         gameEnded = true;
     }
 
+    public void LeavePressed_ToggleDrag(bool yes)
+    {
+        gameEnded = yes;
+    }
+
     public void UpdateBallCount()
     {
         for (int i = 0; i < AvailableBalls.Length; i++)
