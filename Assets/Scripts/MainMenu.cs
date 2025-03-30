@@ -8,6 +8,11 @@ public class MainMenu : MonoBehaviour
     public AudioSource audioSource;
     public AudioClip buttonClickClip;//sfx2, sfx3;
 
+    void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
+
     public void PlayButtonSound()
     {
         PlayClip(buttonClickClip);
@@ -31,11 +36,13 @@ public class MainMenu : MonoBehaviour
 
     public void NewGame(int level)
     {
+        Time.timeScale = 1f;
         StartCoroutine(WaitAndLoadScene(level));
     }
 
     public void StartOverLvl1()
     {
+        Time.timeScale = 1f;
         StartCoroutine(WaitAndLoadScene(1));
     }
 
@@ -55,13 +62,15 @@ public class MainMenu : MonoBehaviour
 
     public void PlayAgain()
     {
+        Time.timeScale = 1f;
         //PlayButtonSound();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        Time.timeScale = 1;
     }
 
     public void NextLevel()
     {
+        Time.timeScale = 1;
+
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
         int nextSceneIndex = currentSceneIndex + 1;
 
