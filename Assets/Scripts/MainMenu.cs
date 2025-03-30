@@ -34,6 +34,11 @@ public class MainMenu : MonoBehaviour
         StartCoroutine(WaitAndLoadScene(level));
     }
 
+    public void StartOverLvl1()
+    {
+        StartCoroutine(WaitAndLoadScene(1));
+    }
+
     public void PauseGame()
     {
         PlayButtonSound();
@@ -70,7 +75,6 @@ public class MainMenu : MonoBehaviour
             Debug.LogWarning("Next level does not exist in the build settings.");
         }
     }
-
 
     public void LoadMainMenuWithoutWait()
     {
