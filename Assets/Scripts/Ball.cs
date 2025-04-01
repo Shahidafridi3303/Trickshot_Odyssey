@@ -97,6 +97,11 @@ public class Ball : MonoBehaviour
             }
         }
 
+        if (other.gameObject.CompareTag("Box"))
+        {
+            SoundManager.instance.PlayBallBoxCollideSound();
+        }
+
         switch (ballType)
         {
             case BallType.Bomb:

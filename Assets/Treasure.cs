@@ -26,7 +26,8 @@ public class Treasure : MonoBehaviour
         if (other.gameObject.CompareTag("Ball"))
         {
             Ball.Instance.BallCameraShake_Small(true, transform.position);
-            UpdateGameManager();
+            UpdateGameManager(); 
+            SoundManager.instance.PlayTreasureActivateSound();
         }
     }
 

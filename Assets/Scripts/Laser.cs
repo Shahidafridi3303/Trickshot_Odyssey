@@ -28,6 +28,7 @@ public class Laser : MonoBehaviour
         {
             Ball.Instance.BallCameraShake();
             GameManager.Instance.ResetBall();
+            SoundManager.instance.PlayLaserSound();
         }
 
         Draw2DRay(laserFirePoint.position, _hit.collider != null ? _hit.point : laserFirePoint.transform.right * defDistanceRay);
@@ -43,6 +44,7 @@ public class Laser : MonoBehaviour
     {
         isActive = false;
         m_lineRenderer.enabled = false;
+        SoundManager.instance.PlayNotYourMoveSound();
 
         if (autoReactivate)
         {
@@ -59,6 +61,7 @@ public class Laser : MonoBehaviour
     {
         isActive = true;
         m_lineRenderer.enabled = true;
+        SoundManager.instance.PlayMoveSound();
 
         if (laserDeactivatorButton)
         {

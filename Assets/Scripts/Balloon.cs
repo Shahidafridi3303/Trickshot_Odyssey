@@ -29,6 +29,7 @@ public class Balloon : MonoBehaviour
         alreadyTravelling = true;
         movingRight = right;
         canMove = true;
+        SoundManager.instance.PlayBalloonMoveSound();
     }
 
     public bool AlreadyTravelling()
@@ -67,6 +68,7 @@ public class Balloon : MonoBehaviour
             GameManager.Instance.IncrementBallCount();
             canMove = false;
             transform.position = movingRight ? rightPosition.position : leftPosition.position;
+            SoundManager.instance.PlayBalloonMoveSound();
         }
     }
 }

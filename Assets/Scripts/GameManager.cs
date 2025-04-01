@@ -128,6 +128,7 @@ public class GameManager : MonoBehaviour
         trajectory.Hide();
         ResetBall();
         Slingshot.Instance.OnMouseUpEvent();
+        SoundManager.instance.PlayButtonClick();
     }
 
     private void OnMouseDown()
@@ -154,6 +155,8 @@ public class GameManager : MonoBehaviour
 
         trajectory.Show();
         Slingshot.Instance.OnMouseDownEvent();
+
+        SoundManager.instance.PlayCameraShakeSound();
     }
 
     void OnDrag()

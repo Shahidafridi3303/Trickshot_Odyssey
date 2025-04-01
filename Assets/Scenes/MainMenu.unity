@@ -571,7 +571,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 0fd81a7155b29424fb7f512e8c6499de, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1951,10 +1951,10 @@ Transform:
   - {fileID: 2093923605}
   - {fileID: 1916496718}
   - {fileID: 857667169}
-  - {fileID: 501012675}
   - {fileID: 849667942}
   - {fileID: 1730999433}
   - {fileID: 443666916}
+  - {fileID: 501012675}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1730999432

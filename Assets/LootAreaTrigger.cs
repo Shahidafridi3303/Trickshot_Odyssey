@@ -24,6 +24,7 @@ public class LootAreaTrigger : MonoBehaviour
         Slingshot.transform.position = SlingshotTeleportLocation.transform.position;
         Slingshot.GetComponent<Slingshot>().UpdateStripPosition();
         GameManager.Instance.ActivateLootballs(isLeft);
+        SoundManager.instance.PlayMoveSound();
         Destroy(gameObject);
     }
 }

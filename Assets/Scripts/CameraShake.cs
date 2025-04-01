@@ -33,6 +33,7 @@ public class CameraShake : MonoBehaviour
     public void Shake(bool small = false)
     {
         PlatformColorChanger.Instance.ChangePlatformColors();
+        //SoundManager.instance.PlayCameraShakeSound();
 
         if (!small)
         {

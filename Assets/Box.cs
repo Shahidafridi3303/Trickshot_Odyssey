@@ -15,6 +15,7 @@ public class Box : MonoBehaviour
         if (spriteRenderer != null)
         {
             spriteRenderer.color = freezeColor;
+            SoundManager.instance.PlayFreezeSound(); 
         }
     }
 }

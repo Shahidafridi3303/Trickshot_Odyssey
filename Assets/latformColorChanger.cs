@@ -18,6 +18,7 @@ public class PlatformColorChanger : MonoBehaviour
     public void ChangePlatformColors()
     {
         Invoke("ApplyColor", 0.2f);
+        //SoundManager.instance.PlayPlatformChangeSound();
     }
 
     private void ApplyColor()
