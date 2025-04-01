@@ -78,15 +78,7 @@ public class MainMenu : MonoBehaviour
         if (nextSceneIndex < SceneManager.sceneCountInBuildSettings)
         {
             StartCoroutine(WaitAndLoadScene(nextSceneIndex));
-            Debug.LogWarning("Activated");
         }
-        else
-        {
-            Debug.LogWarning("Next level does not exist in the build settings.");
-        }
-
-        Debug.Log(currentSceneIndex);
-        Debug.Log(nextSceneIndex);
     }
 
     public void LoadMainMenuWithoutWait()

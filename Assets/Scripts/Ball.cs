@@ -91,15 +91,6 @@ public class Ball : MonoBehaviour
             {
                 bombScript.Trigger();
             }
-            else
-            {
-                Debug.Log("its null");
-            }
-        }
-
-        if (other.gameObject.CompareTag("Box"))
-        {
-            SoundManager.instance.PlayBallBoxCollideSound();
         }
 
         switch (ballType)
@@ -126,6 +117,7 @@ public class Ball : MonoBehaviour
         }
 
         StartCoroutine(IncrementCollisionCount());
+        SoundManager.instance.PlayBallBoxCollideSound();
     }
 
     private void BoxDestoyerEffect(Collision2D other)

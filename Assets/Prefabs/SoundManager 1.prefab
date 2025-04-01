@@ -65,7 +65,7 @@ MonoBehaviour:
   bombExplodeSound: {fileID: 8300000, guid: 7e26c9daf4c32483b9c2790e662d3f1b, type: 3}
   windActivateSound: {fileID: 8300000, guid: a0ca8964c08d54c5dbebf245bdc474ca, type: 3}
   windDeactivateSound: {fileID: 8300000, guid: 130a177e727814a2ea78a886ab72213d, type: 3}
-  BallBoxCollideSound: {fileID: 8300000, guid: b43d102aac6b145468dcaa94a5cccae1, type: 3}
+  BallBoxCollideSound: {fileID: 8300000, guid: 9a288977d9a22aa44af23a4c92f984f4, type: 3}
 --- !u!82 &906476754704641317
 AudioSource:
   m_ObjectHideFlags: 0
